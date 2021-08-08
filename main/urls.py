@@ -5,5 +5,7 @@ from .views import *
 app_name = 'main'
 
 urlpatterns =[
-    path('', index, name='index')
+    path('login/', LoginUser.as_view(), name='login'),
+    path('logout/', logout_user, name='logout'),
+    path('', index, name='index'),
 ]
