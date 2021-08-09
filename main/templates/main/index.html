@@ -1,5 +1,15 @@
 {% extends 'layout/basic.html' %}
 
+{% block title %}
+{{ title }}
+{% endblock %}
+
 {% block content %}
-{{ user}}
+    <div class="container-fluid">
+    {% if user.is_authenticated %}
+        {{ user}}
+    {% else %}
+        <div class="h2">Пожалуйста войдите в приложение</div>
+    {% endif %}
+    </div>
 {% endblock %}
