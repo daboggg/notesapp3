@@ -7,3 +7,4 @@ notesapp/settings_local.py
 media
 notesapp/static
 notesapp.data
+main/migrations
