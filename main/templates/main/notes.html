@@ -1,0 +1,22 @@
+{% extends 'layout/basic.html' %}
+{% load bootstrap4 %}
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block content %}
+{#    <nav class="nav flex-column nav-pills">#}
+{#        <a class="nav-link active" href="#">Active</a>#}
+{#        <a class="nav-link" href="#">Link</a>#}
+{#        <a class="nav-link" href="#">Link</a>#}
+{#        <a class="nav-link disabled" href="#">Disabled</a>#}
+{#    </nav>#}
+
+{% for note in notes %}
+{{ note.title }}
+    {{ note.content }}
+{% endfor %}
+
+
+{% endblock %}
