@@ -5,3 +5,6 @@
 .nav-link {
     font-size: 1.2rem !important;
 }
+.card {
+    border: 2px solid rgb(109, 118, 126) !important;
+}

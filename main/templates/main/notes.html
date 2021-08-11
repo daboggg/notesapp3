@@ -9,13 +9,16 @@
 {% block content %}
     {% get_note_categories as get_cat %}
     <div class="row">
-        <div class="col-3 card border-secondary">
+        <div class="col-md-6 col-xl-4 card border-secondary mx-3">
+            <div class="h3 mt-3">Категории:</div>
             <nav class="nav flex-column nav-pills my-3">
                 {% for cat in get_cat %}
                     {% if cat_selected == cat.slug %}
-                        <a class="nav-link active btn-secondary" href="{{ cat.get_absolute_url }}">{{ cat.name|truncatechars:25 }}</a>
+                        <a class="nav-link active btn-secondary"
+                           href="{{ cat.get_absolute_url }}">{{ cat.name|truncatechars:25 }}</a>
                     {% else %}
-                        <a class="nav-link text-secondary" href="{{ cat.get_absolute_url }}">{{ cat.name|truncatechars:25 }}</a>
+                        <a class="nav-link text-secondary"
+                           href="{{ cat.get_absolute_url }}">{{ cat.name|truncatechars:25 }}</a>
                     {% endif %}
                 {% endfor %}
 
@@ -25,10 +28,40 @@
                 {#        <a class="nav-link disabled" href="#">Disabled</a>#}
             </nav>
 
-{#            {% for note in notes %}#}
-{#                {{ note.title }}#}
-{#                {{ note.content }}#}
-{#            {% endfor %}#}
+            {#            {% for note in notes %}#}
+            {#                {{ note.title }}#}
+            {#                {{ note.content }}#}
+            {#            {% endfor %}#}
+        </div>
+        <div class="col">
+            <div class="row">
+                <div class="col">
+                    <div class="card mt-3">
+                <div class="card-header bg-secondary text-white">
+                    Featured
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Специальный заголовок</h5>
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    <a href="#" class="btn btn-secondary">Переход куда-нибудь</a>
+                </div>
+            </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="card mt-3">
+                <div class="card-header bg-secondary text-white">
+                    Featured
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Специальный заголовок</h5>
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    <a href="#" class="btn btn-secondary">Переход куда-нибудь</a>
+                </div>
+            </div>
+                </div>
+            </div>
         </div>
     </div>
 
