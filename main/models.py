@@ -1,5 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.urls import reverse, reverse_lazy
+
 
 class NotesCategory(models.Model):
     name = models.CharField(max_length=100, db_index=True, verbose_name='Категория')
@@ -7,6 +9,9 @@ class NotesCategory(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('main:notes_by_category', kwargs={'cat_slug': self.slug})
 
     class Meta:
         verbose_name = 'Категория'

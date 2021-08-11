@@ -30,6 +30,19 @@ class Notes(ListView):
         # print(dir(self.request.user))
         context = super().get_context_data(**kwargs)
         context['title'] = 'Записки'
+        context['cat_selected'] = 'vsyakoe'
+        return context
+
+
+class NotesByCategory(ListView):
+    model = Note
+    template_name = 'main/notes.html'
+
+    def get_context_data(self, **kwargs):
+        # print(dir(self.request.user))
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Записки'
+        context['cat_selected'] = self.kwargs['cat_slug']
         return context
 
 

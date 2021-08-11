@@ -1,6 +1,6 @@
 {% extends 'layout/basic.html' %}
 {% load bootstrap4 %}
-{% load notes_tags%}
+{% load notes_tags %}
 
 {% block title %}
     {{ title }}
@@ -8,21 +8,29 @@
 
 {% block content %}
     {% get_note_categories as get_cat %}
-    <nav class="nav flex-column nav-pills">
-    {% for cat in get_cat %}
-          <a class="nav-link" href="#">{{ cat.name|truncatechars:25 }}</a>
-    {% endfor %}
+    <div class="row">
+        <div class="col-3 card border-secondary">
+            <nav class="nav flex-column nav-pills my-3">
+                {% for cat in get_cat %}
+                    {% if cat_selected == cat.slug %}
+                        <a class="nav-link active btn-secondary" href="{{ cat.get_absolute_url }}">{{ cat.name|truncatechars:25 }}</a>
+                    {% else %}
+                        <a class="nav-link text-secondary" href="{{ cat.get_absolute_url }}">{{ cat.name|truncatechars:25 }}</a>
+                    {% endif %}
+                {% endfor %}
 
 
-{#        <a class="nav-link" href="#">Link</a>#}
-{#        <a class="nav-link" href="#">Link</a>#}
-{#        <a class="nav-link disabled" href="#">Disabled</a>#}
-    </nav>
 
-{% for note in notes %}
-{{ note.title }}
-    {{ note.content }}
-{% endfor %}
+                {#        <a class="nav-link" href="#">Link</a>#}
+                {#        <a class="nav-link disabled" href="#">Disabled</a>#}
+            </nav>
+
+{#            {% for note in notes %}#}
+{#                {{ note.title }}#}
+{#                {{ note.content }}#}
+{#            {% endfor %}#}
+        </div>
+    </div>
 
 
 {% endblock %}
