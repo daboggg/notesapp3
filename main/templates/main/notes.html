@@ -1,17 +1,23 @@
 {% extends 'layout/basic.html' %}
 {% load bootstrap4 %}
+{% load notes_tags%}
 
 {% block title %}
     {{ title }}
 {% endblock %}
 
 {% block content %}
-{#    <nav class="nav flex-column nav-pills">#}
-{#        <a class="nav-link active" href="#">Active</a>#}
+    {% get_note_categories as get_cat %}
+    <nav class="nav flex-column nav-pills">
+    {% for cat in get_cat %}
+          <a class="nav-link" href="#">{{ cat.name|truncatechars:25 }}</a>
+    {% endfor %}
+
+
 {#        <a class="nav-link" href="#">Link</a>#}
 {#        <a class="nav-link" href="#">Link</a>#}
 {#        <a class="nav-link disabled" href="#">Disabled</a>#}
-{#    </nav>#}
+    </nav>
 
 {% for note in notes %}
 {{ note.title }}
