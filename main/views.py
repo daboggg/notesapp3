@@ -30,13 +30,17 @@ class Notes(ListView):
         # print(dir(self.request.user))
         context = super().get_context_data(**kwargs)
         context['title'] = 'Записки'
-        context['cat_selected'] = 'vsyakoe'
+        context['cat_selected'] = ''
         return context
 
 
 class NotesByCategory(ListView):
     model = Note
+    context_object_name = 'notes'
     template_name = 'main/notes.html'
+
+    def get_queryset(self):
+        return Note.objects.filter(category__slug=self.kwargs['cat_slug'], user=self.request.user)
 
     def get_context_data(self, **kwargs):
         # print(dir(self.request.user))
