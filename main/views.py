@@ -1,8 +1,10 @@
 from django.contrib.auth import logout, login
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
+from django.http import Http404
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, ListView, DetailView
 
 from main.form import LoginUserForm, RegisterUserForm
 from main.models import Note
@@ -17,7 +19,7 @@ def index(request):
 
 
 # Все записки по авторизованому пользователю
-class Notes(ListView):
+class Notes(ListView, LoginRequiredMixin):
     model = Note
     context_object_name = 'notes'
     template_name = 'main/notes.html'
@@ -34,7 +36,8 @@ class Notes(ListView):
         return context
 
 
-class NotesByCategory(ListView):
+# Все записки по авторизованому пользователю и выбранной категории
+class NotesByCategory(ListView, LoginRequiredMixin):
     model = Note
     context_object_name = 'notes'
     template_name = 'main/notes.html'
@@ -45,9 +48,24 @@ class NotesByCategory(ListView):
     def get_context_data(self, **kwargs):
         # print(dir(self.request.user))
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Записки'
+        context['title'] = 'Записки - ' + str(context['notes'][0].category)
         context['cat_selected'] = self.kwargs['cat_slug']
         return context
+
+
+# одна записка детально
+class ShowNote(DetailView):
+    model = Note
+    template_name = 'main/note.html'
+    slug_url_kwarg = 'note_slug'
+    context_object_name = 'note'
+    extra_context = {'title': 'Запискa'}
+
+    def get_object(self, queryset=None):
+        try:
+            return Note.objects.get(slug=self.kwargs['note_slug'], user=self.request.user)
+        except Exception:
+            raise Http404('Нет такой записки')
 
 
 # Регистрация и авторизация

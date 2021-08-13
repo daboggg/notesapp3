@@ -32,6 +32,9 @@ class Note(models.Model):
     def __str__(self):
         return self.title
 
+    def get_absolute_url(self):
+        return reverse('main:show_note', kwargs={'note_slug': self.slug})
+
     class Meta:
         verbose_name = 'Записка'
         verbose_name_plural = 'Записки'

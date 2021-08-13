@@ -1,28 +1,14 @@
 {% extends 'layout/basic.html' %}
 {% load bootstrap4 %}
-{% load notes_tags %}
+{% load sidebar_tags %}
 
 {% block title %}
-    {{ title }}
+    {{ title|truncatechars:40 }}
 {% endblock %}
 
 {% block content %}
-    {% get_note_categories as get_cat %}
     <div class="row">
-        <div class="col-md-12 col-xl-4 card border-secondary mx-3 mb-3">
-            <div class="h3 mt-3">Категории:</div>
-            <nav class="nav flex-column nav-pills my-3">
-                {% for cat in get_cat %}
-                    {% if cat_selected == cat.slug %}
-                        <a class="nav-link active btn-secondary"
-                           href="{{ cat.get_absolute_url }}">{{ cat.name|truncatechars:25 }}</a>
-                    {% else %}
-                        <a class="nav-link text-secondary"
-                           href="{{ cat.get_absolute_url }}">{{ cat.name|truncatechars:25 }}</a>
-                    {% endif %}
-                {% endfor %}
-            </nav>
-        </div>
+        {% sidebar_view %}
         <div class="col">
             <div class="card-columns">
                 {% for note in notes %}
@@ -35,7 +21,7 @@
                             <h5 class="card-title">{{ note.title|truncatechars:40 }}</h5>
                             <p class="card-text"><i>{{ note.content|truncatechars:60 }}</i></p>
                             <div class="row justify-content-center">
-                                <a href="#" class="btn btn-secondary">Подробнее...</a>
+                                <a href="{{ note.get_absolute_url }}" class="btn btn-secondary">Подробнее...</a>
                             </div>
                         </div>
                     </div>

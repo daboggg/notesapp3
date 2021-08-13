@@ -1,0 +1,14 @@
+<div class="col-md-12 col-xl-4 card border-secondary mx-3 mb-3">
+    <div class="h3 mt-3">Категории:</div>
+    <nav class="nav flex-column nav-pills my-3">
+        {% for cat in categories %}
+            {% if cat_selected == cat.slug %}
+                <a class="nav-link active btn-secondary"
+                   href="{{ cat.get_absolute_url }}">{{ cat.name|truncatechars:25 }}</a>
+            {% else %}
+                <a class="nav-link text-secondary"
+                   href="{{ cat.get_absolute_url }}">{{ cat.name|truncatechars:25 }}</a>
+            {% endif %}
+        {% endfor %}
+    </nav>
+</div>
