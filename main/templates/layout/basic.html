@@ -13,8 +13,11 @@
         | notesapp
     </title>
     {% bootstrap_css %}
+{#    <link href="/open-iconic/font/css/open-iconic-bootstrap.css" rel="stylesheet">#}
+
     <link rel="stylesheet" type="text/css"
           href="{% static 'main/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'open-iconic-master/font/css/open-iconic-bootstrap.css' %}">
     {% bootstrap_javascript jquery='slim' %}
 </head>
 <body>
@@ -24,17 +27,13 @@
     <div class="row justify-content-center">
         <div class="col-md-10">
             {% bootstrap_messages %}
-{#             <div style="background: #006b1b">HJHKHKHKJHKJH</div>#}
+            {#             <div style="background: #006b1b">HJHKHKHKJHKJH</div>#}
             {% block content %}
             {% endblock %}
         </div>
 
     </div>
 </div>
-
-
-
-
 
 
 </body>

@@ -1,10 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ title }}</title>
-</head>
-<body>
-{{ note.title }}
-</body>
-</html>
+{% extends 'layout/basic.html' %}
+{% load bootstrap4 %}
+{% load sidebar_tags %}
+
+{% block title %}
+    {{ title|truncatechars:40 }}
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        {% sidebar_view %}
+        <div class="col">
+            <div class="card mb-3">
+                <div class="card-header bg-secondary text-white ">
+                    <div class="row  justify-content-between">
+                        <div class="col-9 col-sm-10">
+                          {{ note.title }}
+                        </div>
+                        <span class="col-auto">
+                            <span>
+                                <span class="oi oi-pencil mr-3"></span>
+                                <span class="oi oi-trash"></span>
+                            </span>
+                        </span>
+                    </div>
+                </div>
+                <img class="card-img-top" src="{{ note.image.url }}" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">{{ note.title }}</h5>
+                    <p class="card-text"><i>{{ note.content }}</i></p>
+                    <p class="card-text"><small class="text-muted">Последнее обновление: {{ note.time_update }}</small>
+                    </p>
+                </div>
+            </div>
+        </div>
+{% endblock %}

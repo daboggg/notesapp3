@@ -14,7 +14,10 @@
                 {% for note in notes %}
                     <div class="card">
                         <div class="card-header bg-secondary text-white">
-                            {{ note.title|truncatechars:17 }}
+                            <div class="row justify-content-between px-1">
+                                {{ note.title|truncatechars:17 }}
+                                <span class="oi oi-trash"></span>
+                            </div>
                         </div>
                         <img class="card-img-top" src="{{ note.image.url }}" alt="Card image cap">
                         <div class="card-body">

@@ -6,7 +6,12 @@ register = template.Library()
 
 @register.inclusion_tag('parts/sidebar.html', takes_context=True)
 def sidebar_view(context):
-    return {
+    ctx = {
         'categories': NotesCategory.objects.all(),
-        'cat_selected': context['cat_selected']
     }
+
+    if 'cat_selected' in context:
+        ctx['cat_selected'] = context['cat_selected']
+    else:
+        ctx['cat_selected'] = ''
+    return ctx
