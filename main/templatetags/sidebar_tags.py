@@ -1,4 +1,6 @@
 from django import template
+from django.db.models import Count
+
 from main.models import *
 
 register = template.Library()
@@ -7,7 +9,7 @@ register = template.Library()
 @register.inclusion_tag('parts/sidebar.html', takes_context=True)
 def sidebar_view(context):
     ctx = {
-        'categories': NotesCategory.objects.all(),
+        'categories': NotesCategory.objects.annotate(total=Count('note')).filter(total__gt=0),
     }
 
     if 'cat_selected' in context:
