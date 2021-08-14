@@ -2,6 +2,14 @@ from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
 
+from main.models import Note
+
+
+class AddNoteForm(forms.ModelForm):
+    class Meta:
+        model = Note
+        fields = ['title', 'slug', 'content', 'image', 'is_published', 'category']
+
 
 class LoginUserForm(AuthenticationForm):
     username = forms.CharField(label='Логин:', widget=forms.TextInput())

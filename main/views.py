@@ -1,12 +1,13 @@
 from django.contrib.auth import logout, login
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
 from django.http import Http404
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, DetailView
 
-from main.form import LoginUserForm, RegisterUserForm
+from main.form import LoginUserForm, RegisterUserForm, AddNoteForm
 from main.models import Note
 
 
@@ -66,6 +67,25 @@ class ShowNote(DetailView):
             return Note.objects.get(slug=self.kwargs['note_slug'], user=self.request.user)
         except Exception:
             raise Http404('Нет такой записки')
+
+
+class AddNote(LoginRequiredMixin, CreateView):
+    form_class = AddNoteForm
+    template_name = 'main/addnote.html'
+    success_url = reverse_lazy('main:notes')
+
+
+    def form_valid(self, form):
+        fields = form.save(commit=False)
+        fields.user =User.objects.get(pk=self.request.user.pk)
+        fields.save()
+        return super().form_valid(form)
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Добавление записки'
+        return context
 
 
 # Регистрация и авторизация
