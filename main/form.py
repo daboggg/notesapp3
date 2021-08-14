@@ -8,7 +8,7 @@ from main.models import Note
 class AddNoteForm(forms.ModelForm):
     class Meta:
         model = Note
-        fields = ['title', 'slug', 'content', 'image', 'is_published', 'category']
+        fields = ['title', 'content', 'image', 'is_published', 'category']
 
 
 class LoginUserForm(AuthenticationForm):

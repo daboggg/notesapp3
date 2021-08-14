@@ -9,6 +9,7 @@ from django.views.generic import CreateView, ListView, DetailView
 
 from main.form import LoginUserForm, RegisterUserForm, AddNoteForm
 from main.models import Note
+from slugify import slugify
 
 
 def index(request):
@@ -78,6 +79,7 @@ class AddNote(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         fields = form.save(commit=False)
         fields.user =User.objects.get(pk=self.request.user.pk)
+        fields.slug = slugify(fields.title)
         fields.save()
         return super().form_valid(form)
 
