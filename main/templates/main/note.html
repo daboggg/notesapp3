@@ -1,6 +1,8 @@
 {% extends 'layout/basic.html' %}
 {% load bootstrap4 %}
 {% load sidebar_tags %}
+{% load static %}
+{% load thumbnail %}
 
 {% block title %}
     {{ title|truncatechars:40 }}
@@ -24,7 +26,15 @@
                         </span>
                     </div>
                 </div>
-                <img class="card-img-top" src="{{ note.image.url }}" alt="Card image cap">
+
+                {% if note.image %}
+                    <img class="card-img-top" src="{% thumbnail note.image '1000x1000' %}" alt="Card image cap">
+                {% else %}
+                    <img class="card-img-top" src="{% static 'main/empty.jpg' %}" alt="Card image cap">
+                {% endif %}
+
+
+
                 <div class="card-body">
                     <h5 class="card-title">{{ note.title }}</h5>
                     <p class="card-text"><i>{{ note.content }}</i></p>
