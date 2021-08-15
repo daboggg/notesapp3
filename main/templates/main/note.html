@@ -27,11 +27,13 @@
                     </div>
                 </div>
 
-                {% if note.image %}
-                    <img class="card-img-top" src="{% thumbnail note.image '1000x1000' %}" alt="Card image cap">
+                <div class="text-center">
+                    {% if note.image %}
+                        <a href="{{ note.image.url }}"><img class="img-thumbnail" src="{% thumbnail note.image '1000x1000' %}" alt="Card image cap"></a>
                 {% else %}
-                    <img class="card-img-top" src="{% static 'main/empty.jpg' %}" alt="Card image cap">
+                    <img class="img-thumbnail" src="{% static 'main/empty.jpg' %}" alt="Card image cap">
                 {% endif %}
+                </div>
 
 
 

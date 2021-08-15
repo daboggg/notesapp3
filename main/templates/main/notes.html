@@ -22,11 +22,15 @@
                             </div>
                         </div>
 
-                        {% if note.image %}
-                            <img class="card-img-top img-thumbnail" src="{% thumbnail note.image '400x400' %}" alt="Card image cap">
-                        {% else %}
-                            <img class="card-img-top" src="{% static 'main/empty.jpg' %}" alt="Card image cap">
-                        {% endif %}
+
+                        <div class="text-center">
+                            {% if note.image %}
+                                <img class="img-thumbnail" src="{% thumbnail note.image '400x400' %}"
+                                     alt="Card image cap">
+                            {% else %}
+                                <img class="img-thumbnail" src="{% static 'main/empty.jpg' %}" alt="Card image cap">
+                            {% endif %}
+                        </div>
 
 
                         <div class="card-body">
@@ -43,8 +47,8 @@
     </div>
     <div style="margin-bottom: 100px" class="fixed-bottom row justify-content-end mr-4">
         <form action="{% url 'main:addnote' %}">
-            <button  class="btn btn-secondary btn-lg btn-circle">
-            <span style="font-size: 1.7rem" class="oi oi-plus"></span>
+            <button class="btn btn-secondary btn-lg btn-circle">
+                <span style="font-size: 1.7rem" class="oi oi-plus"></span>
             </button>
         </form>
     </div>
