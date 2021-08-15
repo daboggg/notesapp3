@@ -45,11 +45,18 @@
             </div>
         </div>
     </div>
-    <div style="margin-bottom: 100px" class="fixed-bottom row justify-content-end mr-4">
-        <form action="{% url 'main:addnote' %}">
-            <button class="btn btn-secondary btn-lg btn-circle">
-                <span style="font-size: 1.7rem" class="oi oi-plus"></span>
-            </button>
-        </form>
-    </div>
+     <div class="bt-float">
+            <form action="{% url 'main:addnote' %}">
+                <button class="btn btn-secondary btn-lg btn-circle">
+                    <span style="font-size: 1.7rem" class="oi oi-plus"></span>
+                </button>
+            </form>
+        </div>
+{#    <div style="margin-bottom: 100px" class="fixed-bottom row justify-content-end mr-4">#}
+{#        <form action="{% url 'main:addnote' %}">#}
+{#            <button style="margin-left: 100%; margin-bottom: 100px" class="pull-right btn btn-secondary btn-lg btn-circle">#}
+{#                <span style="font-size: 1.7rem" class="oi oi-plus"></span>#}
+{#            </button>#}
+{#        </form>#}
+{#    </div>#}
 {% endblock %}
