@@ -2,14 +2,16 @@ from django.contrib.auth import logout, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
-from django.http import Http404
+from django.contrib import messages
+from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, ListView, DetailView
+from django.views.generic import CreateView, ListView, DetailView, DeleteView
 
 from main.form import LoginUserForm, RegisterUserForm, AddNoteForm
 from main.models import Note
 from slugify import slugify
+from easy_thumbnails.files import get_thumbnailer
 
 
 def index(request):
@@ -70,6 +72,7 @@ class ShowNote(DetailView):
             raise Http404('Нет такой записки')
 
 
+# добавление записки
 class AddNote(LoginRequiredMixin, CreateView):
     form_class = AddNoteForm
     template_name = 'main/addnote.html'
@@ -90,6 +93,31 @@ class AddNote(LoginRequiredMixin, CreateView):
         return context
 
 
+# удаление записки
+class DeleteNote(DeleteView):
+    model = Note
+    slug_url_kwarg = 'note_slug'
+    success_url = reverse_lazy('main:notes')
+    extra_context = {'title': 'Удаление записки'}
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        print(self.object.user == request.user)
+        if self.object.user == request.user:
+
+            # удаление всех миниатюр
+            thumbnailer = get_thumbnailer(self.object.image)
+            thumbnailer.delete_thumbnails()
+            #удаление записки
+            self.object.delete()
+            return HttpResponseRedirect(self.success_url)
+        else:
+            messages.add_message(request, messages.ERROR, 'Удаление не возможно, это не ваша записка')
+            return HttpResponseRedirect(self.success_url)
+
+
+
+#######################################################################################
 # Регистрация и авторизация
 class LoginUser(LoginView):
     form_class = LoginUserForm
