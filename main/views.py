@@ -23,11 +23,10 @@ def index(request):
 
 
 # Все записки по авторизованому пользователю
-class Notes(ListView, LoginRequiredMixin):
+class Notes(LoginRequiredMixin, ListView):
     model = Note
     context_object_name = 'notes'
     template_name = 'main/notes.html'
-
     def get_queryset(self):
         return Note.objects.filter(user=self.request.user)
 
@@ -41,7 +40,7 @@ class Notes(ListView, LoginRequiredMixin):
 
 
 # Все записки по авторизованому пользователю и выбранной категории
-class NotesByCategory(ListView, LoginRequiredMixin):
+class NotesByCategory(LoginRequiredMixin, ListView):
     model = Note
     context_object_name = 'notes'
     template_name = 'main/notes.html'
@@ -58,7 +57,7 @@ class NotesByCategory(ListView, LoginRequiredMixin):
 
 
 # одна записка детально
-class ShowNote(DetailView):
+class ShowNote(LoginRequiredMixin, DetailView):
     model = Note
     template_name = 'main/note.html'
     slug_url_kwarg = 'note_slug'
@@ -94,7 +93,7 @@ class AddNote(LoginRequiredMixin, CreateView):
 
 
 # удаление записки
-class DeleteNote(DeleteView):
+class DeleteNote(LoginRequiredMixin, DeleteView):
     model = Note
     slug_url_kwarg = 'note_slug'
     success_url = reverse_lazy('main:notes')

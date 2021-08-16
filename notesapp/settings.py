@@ -127,3 +127,5 @@ THUMBNAIL_ALIASES = {
 }
 
 THUMBNAIL_BASEDIR = 'thumbnails'
+
+LOGIN_URL = '/login/'
