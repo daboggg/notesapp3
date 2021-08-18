@@ -10,6 +10,10 @@ class NotesCategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
 
 
+class AdditionalImageInline(admin.TabularInline):
+    model = AdditionalImage
+
+
 class NoteAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'time_create','get_html_image', 'is_published')
     list_display_links = ('id', 'title',)
@@ -17,6 +21,7 @@ class NoteAdmin(admin.ModelAdmin):
     list_editable = ('is_published',)
     list_filter = ('is_published', 'time_create')
     prepopulated_fields = {'slug': ('title',)}
+    inlines = (AdditionalImageInline,)
 
     def get_html_image(self, object):
         if object.image:

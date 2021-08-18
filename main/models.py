@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse, reverse_lazy
+from easy_thumbnails.files import get_thumbnailer
+
 from .utils import get_timestamp_path
 
 
@@ -30,6 +32,15 @@ class Note(models.Model):
     category = models.ForeignKey(NotesCategory, on_delete=models.PROTECT, verbose_name='Категория')
     user = models.ForeignKey(User, on_delete=models.PROTECT, verbose_name='User')
 
+    def delete(self, *args, **kwargs):
+        for ai in self.additionalimage_set.all():
+            # удаление всех миниатюр
+            thumbnailer = get_thumbnailer(ai.image)
+            thumbnailer.delete_thumbnails()
+            # удаление изображения
+            ai.delete()
+        super().delete(*args, **kwargs)
+
     def __str__(self):
         return self.title
 
@@ -40,3 +51,11 @@ class Note(models.Model):
         verbose_name = 'Записка'
         verbose_name_plural = 'Записки'
 
+
+class AdditionalImage(models.Model):
+    note = models.ForeignKey(Note, on_delete=models.CASCADE, verbose_name='Записка')
+    image = models.ImageField(upload_to=get_timestamp_path, verbose_name='Изображение')
+
+    class Meta:
+        verbose_name_plural = 'Дополнительные иллюстрации'
+        verbose_name = 'Дополнительная иллюстрация'

@@ -101,7 +101,6 @@ class DeleteNote(LoginRequiredMixin, DeleteView):
 
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
-        print(self.object.user == request.user)
         if self.object.user == request.user:
 
             # удаление всех миниатюр
