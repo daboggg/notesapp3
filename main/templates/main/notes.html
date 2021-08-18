@@ -14,22 +14,22 @@
         <div class="col">
             <div class="card-columns">
                 {% for note in notes %}
-                    <div class="card">
-                        <div class="card-header bg-secondary text-white">
-                            <div class="row justify-content-between px-1">
-                                {{ note.title|truncatechars:17 }}
-                                <a style="color:inherit" href="{% url 'main:deletenote' note.slug %}"><span
-                                        class="oi oi-trash"></span></a>
-                            </div>
-                        </div>
+                    <div class="card col-10 offset-1 col-sm-12 offset-sm-0">
+{#                        <div class="card-header bg-secondary text-white">#}
+{#                            <div class="row justify-content-between px-1">#}
+{#                                {{ note.title|truncatechars:17 }}#}
+{#                                <a style="color:inherit" href="{% url 'main:deletenote' note.slug %}"><span#}
+{#                                        class="oi oi-trash"></span></a>#}
+{#                            </div>#}
+{#                        </div>#}
 
 
                         <div class="text-center">
                             {% if note.image %}
-                                <img class="img-thumbnail" src="{% thumbnail note.image '400x400' %}"
+                                <img class="img-thumbnail" src="{% thumbnail note.image 'default' %}"
                                      alt="Card image cap">
                             {% else %}
-                                <img class="img-thumbnail" src="{% static 'main/empty.jpg' %}" alt="Card image cap">
+                                <img class="img-thumbnail" src="{% thumbnail 'empty.jpg' 'default' %}" alt="Card image cap">
                             {% endif %}
                         </div>
 

@@ -28,6 +28,7 @@
                     </div>
                 </div>
 
+{#            картинка#}
                 <div class="text-center">
                     {% if note.image %}
                         <a href="{{ note.image.url }}"><img class="img-thumbnail"
@@ -45,6 +46,7 @@
                     <p class="card-text"><small class="text-muted">Последнее обновление: {{ note.time_update }}</small>
                     </p>
 
+{#                карусель#}
                     <div class="row justify-content-center">
                         <div class="col-md-6">
                             <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">

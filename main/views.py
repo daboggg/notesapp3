@@ -12,6 +12,7 @@ from main.form import LoginUserForm, RegisterUserForm, AddNoteForm
 from main.models import Note
 from slugify import slugify
 from easy_thumbnails.files import get_thumbnailer
+from datetime import datetime
 
 
 def index(request):
@@ -82,6 +83,7 @@ class AddNote(LoginRequiredMixin, CreateView):
         fields = form.save(commit=False)
         fields.user =User.objects.get(pk=self.request.user.pk)
         fields.slug = slugify(fields.title)
+        fields.slug = f'{slugify(fields.title)}-{slugify(str(datetime.now()))}'
         fields.save()
         return super().form_valid(form)
 
