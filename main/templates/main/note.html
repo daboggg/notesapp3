@@ -20,7 +20,7 @@
                         </div>
                         <span class="col-auto">
                             <span>
-                                <span class="oi oi-pencil mr-3"></span>
+                                <a style="color:inherit" href="{% url 'main:updatenote' note.slug %}"><span class="oi oi-pencil mr-3"></span></a>
                                 <a style="color:inherit" href="{% url 'main:deletenote' note.slug %}"><span
                                         class="oi oi-trash"></span></a>
                             </span>

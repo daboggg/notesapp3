@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, ListView, DetailView, DeleteView
+from django.views.generic import CreateView, ListView, DetailView, DeleteView, UpdateView
 
 from main.form import LoginUserForm, RegisterUserForm, AddNoteForm, AIFormSet
 from main.models import Note
@@ -76,7 +76,7 @@ class ShowNote(LoginRequiredMixin, DetailView):
 class AddNote(LoginRequiredMixin, CreateView):
     form_class = AddNoteForm
     template_name = 'main/addnote.html'
-    success_url = reverse_lazy('main:notes')
+    # success_url = reverse_lazy('main:notes')
 
 
     def form_valid(self, form):
@@ -94,6 +94,36 @@ class AddNote(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['formset'] = AIFormSet()
+        context['title'] = 'Добавление записки'
+        return context
+
+
+# редактирование записки
+class UpdateNote(LoginRequiredMixin, UpdateView):
+    model = Note
+    form_class = AddNoteForm
+    template_name = 'main/updatenote.html'
+    slug_url_kwarg = 'note_slug'
+
+    def get_queryset(self):
+        return Note.objects.filter(slug=self.kwargs[self.slug_url_kwarg], user=self.request.user)
+
+
+    def form_valid(self, form):
+        fields = form.save(commit=False)
+        fields.user = self.request.user
+        fields.slug = f'{slugify(fields.title)}-{slugify(str(datetime.now()))}'
+        fields.save()
+        formset = AIFormSet(self.request.POST, self.request.FILES, instance=fields)
+        print(self.request.POST)
+        if formset.is_valid():
+            formset.save()
+            messages.add_message(self.request, messages.SUCCESS, 'Записка исправлена')
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['formset'] = AIFormSet(instance=self.object)
         context['title'] = 'Добавление записки'
         return context
 
