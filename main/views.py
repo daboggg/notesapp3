@@ -8,7 +8,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, DetailView, DeleteView
 
-from main.form import LoginUserForm, RegisterUserForm, AddNoteForm
+from main.form import LoginUserForm, RegisterUserForm, AddNoteForm, AIFormSet
 from main.models import Note
 from slugify import slugify
 from easy_thumbnails.files import get_thumbnailer
@@ -82,14 +82,18 @@ class AddNote(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         fields = form.save(commit=False)
         fields.user =User.objects.get(pk=self.request.user.pk)
-        fields.slug = slugify(fields.title)
         fields.slug = f'{slugify(fields.title)}-{slugify(str(datetime.now()))}'
         fields.save()
+        formset = AIFormSet(self.request.POST, self.request.FILES, instance=fields)
+        if formset.is_valid():
+            formset.save()
+            messages.add_message(self.request, messages.SUCCESS, 'Записка добавлена')
         return super().form_valid(form)
 
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['formset'] = AIFormSet()
         context['title'] = 'Добавление записки'
         return context
 

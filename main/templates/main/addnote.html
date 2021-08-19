@@ -10,9 +10,11 @@
     <div class="row justify-content-center mt-5">
         <div class="col-md-6">
             <div class="h1">Создание записки</div>
-            <form method="post" enctype="multipart/form-data">
+            <form class="mb-3" method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            {% bootstrap_form form %}
+            {% bootstrap_form form layout='horizontal' %}
+                <br>
+            {% bootstrap_formset formset layout='horizontal' %}
             <div class="row justify-content-end mr-1">
 {#                {% buttons submit="Войти" class="pull right" %}{% endbuttons %}#}
                 <button type="submit" class="btn btn-secondary">Создать</button>

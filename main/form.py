@@ -1,14 +1,18 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
+from django.forms import inlineformset_factory
 
-from main.models import Note
+from main.models import Note, AdditionalImage
 
 
 class AddNoteForm(forms.ModelForm):
     class Meta:
         model = Note
         fields = ['title', 'content', 'image', 'is_published', 'category']
+
+
+AIFormSet = inlineformset_factory(Note, AdditionalImage, fields='__all__')
 
 
 class LoginUserForm(AuthenticationForm):
