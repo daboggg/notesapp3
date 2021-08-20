@@ -9,7 +9,7 @@ from main.models import Note, AdditionalImage
 class AddNoteForm(forms.ModelForm):
     class Meta:
         model = Note
-        fields = ['title', 'content', 'image', 'is_published', 'category']
+        fields = ['category', 'title', 'content', 'image', 'is_published', ]
 
 
 AIFormSet = inlineformset_factory(Note, AdditionalImage, fields='__all__')

@@ -112,7 +112,7 @@ class UpdateNote(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         fields = form.save(commit=False)
         fields.user = self.request.user
-        fields.slug = f'{slugify(fields.title)}-{slugify(str(datetime.now()))}'
+        # fields.slug = f'{slugify(fields.title)}-{slugify(str(datetime.now()))}'
         fields.save()
         formset = AIFormSet(self.request.POST, self.request.FILES, instance=fields)
         print(self.request.POST)
@@ -124,7 +124,7 @@ class UpdateNote(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['formset'] = AIFormSet(instance=self.object)
-        context['title'] = 'Добавление записки'
+        context['title'] = 'Редактирование записки'
         return context
 
 
