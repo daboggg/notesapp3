@@ -25,6 +25,7 @@ def index(request):
 
 # Все записки по авторизованому пользователю
 class Notes(LoginRequiredMixin, ListView):
+    paginate_by = 10
     model = Note
     context_object_name = 'notes'
     template_name = 'main/notes.html'
@@ -42,6 +43,7 @@ class Notes(LoginRequiredMixin, ListView):
 
 # Все записки по авторизованому пользователю и выбранной категории
 class NotesByCategory(LoginRequiredMixin, ListView):
+    paginate_by = 10
     model = Note
     context_object_name = 'notes'
     template_name = 'main/notes.html'
