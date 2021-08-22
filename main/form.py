@@ -1,12 +1,30 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
-from django.forms import inlineformset_factory
+from django.forms import inlineformset_factory, ValidationError
+from django.contrib import messages
 
 from main.models import Note, AdditionalImage
+from PIL import Image
 
 
 class AddNoteForm(forms.ModelForm):
+
+    MIN_RESOLUTION = (200, 200)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['image'].help_text = 'Загружайте изображение с минимальным разрешением {}x{}'.format(*self.MIN_RESOLUTION)
+
+    def clean_image(self):
+        image = self.cleaned_data['image']
+        img = Image.open(image)
+        min_height, min_width = self.MIN_RESOLUTION
+        if img.height < min_height or img.width < min_width:
+            raise ValidationError('Разрешение изображения меньше минимального!')
+        return image
+
+
     class Meta:
         model = Note
         fields = ['category', 'title', 'content', 'image', 'is_published', ]

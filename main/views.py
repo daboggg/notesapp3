@@ -3,6 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
 from django.contrib import messages
+from django.core.mail import send_mail
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
@@ -19,6 +20,18 @@ def index(request):
     return render(request, 'main/index.html', {'title': 'Главная страница'})
 
 
+def mail(request):
+    ml = send_mail(
+        'Subject here',
+        'Here is the message.',
+        'v.zinin@rambler.ru',
+        ['vzinin@list.ru'],
+        fail_silently=False,
+    )
+    print(ml)
+    return render(request, 'main/index.html')
+
+
 # def notes(request):
 #     return render(request, 'main/notes.html', {'title': 'Заметки'})
 
@@ -29,9 +42,9 @@ class Notes(LoginRequiredMixin, ListView):
     model = Note
     context_object_name = 'notes'
     template_name = 'main/notes.html'
+
     def get_queryset(self):
         return Note.objects.filter(user=self.request.user)
-
 
     def get_context_data(self, **kwargs):
         # print(dir(self.request.user))
@@ -78,12 +91,12 @@ class ShowNote(LoginRequiredMixin, DetailView):
 class AddNote(LoginRequiredMixin, CreateView):
     form_class = AddNoteForm
     template_name = 'main/addnote.html'
-    # success_url = reverse_lazy('main:notes')
 
+    # success_url = reverse_lazy('main:notes')
 
     def form_valid(self, form):
         fields = form.save(commit=False)
-        fields.user =User.objects.get(pk=self.request.user.pk)
+        fields.user = User.objects.get(pk=self.request.user.pk)
         fields.slug = f'{slugify(fields.title)}-{slugify(str(datetime.now()))}'
         fields.save()
         formset = AIFormSet(self.request.POST, self.request.FILES, instance=fields)
@@ -91,7 +104,6 @@ class AddNote(LoginRequiredMixin, CreateView):
             formset.save()
             messages.add_message(self.request, messages.SUCCESS, 'Записка добавлена')
         return super().form_valid(form)
-
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -109,7 +121,6 @@ class UpdateNote(LoginRequiredMixin, UpdateView):
 
     def get_queryset(self):
         return Note.objects.filter(slug=self.kwargs[self.slug_url_kwarg], user=self.request.user)
-
 
     def form_valid(self, form):
         fields = form.save(commit=False)
@@ -144,13 +155,12 @@ class DeleteNote(LoginRequiredMixin, DeleteView):
             # удаление всех миниатюр
             thumbnailer = get_thumbnailer(self.object.image)
             thumbnailer.delete_thumbnails()
-            #удаление записки
+            # удаление записки
             self.object.delete()
             return HttpResponseRedirect(self.success_url)
         else:
             messages.add_message(request, messages.ERROR, 'Удаление не возможно, это не ваша записка')
             return HttpResponseRedirect(self.success_url)
-
 
 
 #######################################################################################
@@ -167,9 +177,11 @@ class LoginUser(LoginView):
     def get_success_url(self):
         return reverse_lazy('main:index')
 
+
 def logout_user(request):
     logout(request)
     return redirect('main:login')
+
 
 class RegisterUser(CreateView):
     form_class = RegisterUserForm
