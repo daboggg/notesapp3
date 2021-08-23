@@ -9,7 +9,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, DetailView, DeleteView, UpdateView
 
-from main.form import LoginUserForm, RegisterUserForm, AddNoteForm, AIFormSet
+from main.form import LoginUserForm, RegisterUserForm, AddNoteForm, AIFormSet, TestForm
 from main.models import Note
 from slugify import slugify
 from easy_thumbnails.files import get_thumbnailer
@@ -34,7 +34,16 @@ def mail(request):
 
 # def notes(request):
 #     return render(request, 'main/notes.html', {'title': 'Заметки'})
+#
 
+def test(request):
+    if request.method == 'POST':
+        form = TestForm(request.POST)
+        if form.is_valid():
+            print(form.cleaned_data)
+    else:
+        form = TestForm()
+    return render(request, 'main/test.html', {'form': form})
 
 # Все записки по авторизованому пользователю
 class Notes(LoginRequiredMixin, ListView):

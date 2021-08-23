@@ -8,6 +8,13 @@ from main.models import Note, AdditionalImage
 from PIL import Image
 
 
+class TestForm(forms.Form):
+    CHOICES = [('first', '111'),
+               ('second', '222')]
+
+    like = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect())
+
+
 class AddNoteForm(forms.ModelForm):
 
     MIN_RESOLUTION = (200, 200)
