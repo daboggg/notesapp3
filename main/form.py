@@ -8,11 +8,20 @@ from main.models import Note, AdditionalImage
 from PIL import Image
 
 
+class DateInput(forms.DateInput):
+    input_type = 'date'
+
+class TimeInput(forms.TextInput):
+    input_type = 'time'
+
+
 class TestForm(forms.Form):
     CHOICES = [('first', '111'),
                ('second', '222')]
 
-    like = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect())
+    my_date_field = forms.DateField(widget=DateInput)
+    my_tyme_field = forms.TimeField(widget=TimeInput)
+
 
 
 class AddNoteForm(forms.ModelForm):
