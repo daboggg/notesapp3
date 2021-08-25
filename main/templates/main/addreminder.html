@@ -1,0 +1,22 @@
+{% extends 'layout/basic.html' %}
+{% load bootstrap4 %}
+{% load paginate_tags %}
+
+{% block title %}
+    {{ title|truncatechars:40 }}
+{% endblock %}
+
+{% block content %}
+
+    <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% bootstrap_form form layout='horizontal' %}
+
+
+    <div class="row justify-content-end mr-1 mt-3">
+        {#                {% buttons submit="Войти" class="pull right" %}{% endbuttons %}#}
+        <button type="submit" class="btn btn-secondary">Создать</button>
+    </div>
+    </form>
+
+{% endblock %}

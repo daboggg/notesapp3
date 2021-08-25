@@ -4,8 +4,9 @@ from django.contrib.auth.models import User
 from django.forms import inlineformset_factory, ValidationError
 from django.contrib import messages
 
-from main.models import Note, AdditionalImage
+from main.models import Note, AdditionalImage, Reminder
 from PIL import Image
+from .utils import date_range
 
 
 class DateInput(forms.DateInput):
@@ -14,16 +15,28 @@ class DateInput(forms.DateInput):
 class TimeInput(forms.TextInput):
     input_type = 'time'
 
+class DateTimeInput(forms.DateTimeInput):
+    input_type = 'datetime-local'
+
 
 class TestForm(forms.Form):
     CHOICES = [('first', '111'),
                ('second', '222')]
 
-    my_date_field = forms.DateField(widget=DateInput)
+    my_date_field = forms.DateField(widget=DateInput(attrs={'min': '2021-01-01', 'max': '2030-01-01'}))
     my_tyme_field = forms.TimeField(widget=TimeInput)
 
 
+# форма добавления напоминания
+class AddReminderForm(forms.ModelForm):
+    date = date_range()
+    date_cron = forms.DateTimeField(widget=DateTimeInput(attrs={'min': date['start'], 'max': date['finish']}))
+    # date_cron = forms.DateField(widget=DateInput(attrs={'min': '2021-01-01', 'max': '2030-01-01'}))
+    class Meta:
+        model = Reminder
+        fields = ['title', 'content', 'is_once', 'date_cron', 'raw_cron' ]
 
+# форма добавления записки
 class AddNoteForm(forms.ModelForm):
 
     MIN_RESOLUTION = (200, 200)

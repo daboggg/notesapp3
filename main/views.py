@@ -9,7 +9,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, DetailView, DeleteView, UpdateView
 
-from main.form import LoginUserForm, RegisterUserForm, AddNoteForm, AIFormSet, TestForm
+from main.form import LoginUserForm, RegisterUserForm, AddNoteForm, AIFormSet, TestForm, AddReminderForm
 from main.models import Note, Reminder
 from slugify import slugify
 from easy_thumbnails.files import get_thumbnailer
@@ -33,6 +33,31 @@ class Reminders(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return Reminder.objects.filter(user=self.request.user)
+
+
+# добавление напоминания
+class AddReminder(LoginRequiredMixin, CreateView):
+    form_class = AddReminderForm
+    template_name = 'main/addreminder.html'
+    extra_context = {'title': 'Добавление напоминания'}
+    success_url = reverse_lazy('main:reminders')
+
+    # def form_valid(self, form):
+    #     fields = form.save(commit=False)
+    #     fields.user = User.objects.get(pk=self.request.user.pk)
+    #     fields.slug = f'{slugify(fields.title)}-{slugify(str(datetime.now()))}'
+    #     fields.save()
+    #     formset = AIFormSet(self.request.POST, self.request.FILES, instance=fields)
+    #     if formset.is_valid():
+    #         formset.save()
+    #         messages.add_message(self.request, messages.SUCCESS, 'Записка добавлена')
+    #     return super().form_valid(form)
+
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context['formset'] = AIFormSet()
+    #     context['title'] = 'Добавление записки'
+    #     return context
 
 ###########################################################################
 # ЗАПИСКА

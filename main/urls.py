@@ -8,6 +8,7 @@ urlpatterns =[
     path('', index, name='index'),
     path('aa/', mail, name='mail'),
     path('addnote/', AddNote.as_view(), name='addnote'),
+    path('addreminder/', AddReminder.as_view(), name='addreminder'),
     path('login/', LoginUser.as_view(), name='login'),
     path('logout/', logout_user, name='logout'),
     path('notes/', Notes.as_view(), name='notes'),
