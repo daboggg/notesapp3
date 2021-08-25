@@ -64,7 +64,7 @@ class AdditionalImage(models.Model):
 class Reminder(models.Model):
     title = models.CharField(max_length=100, db_index=True, verbose_name='Заголовок')
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL')
-    content = models.TextField(blank=True, )
+    content = models.TextField(blank=True, verbose_name='Текст напоминания')
     is_once = models.BooleanField(default=True, verbose_name='Однократое напоминание?')
     date_cron = models.DateTimeField(blank=True,null=True, verbose_name='Дата_время напоминания')
     raw_cron = models.CharField(blank=True, max_length=50, verbose_name='Крон выражение напоминания')
