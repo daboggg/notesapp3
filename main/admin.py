@@ -31,3 +31,4 @@ class NoteAdmin(admin.ModelAdmin):
 
 admin.site.register(NotesCategory, NotesCategoryAdmin)
 admin.site.register(Note, NoteAdmin)
+admin.site.register(Reminder)

@@ -10,7 +10,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, DetailView, DeleteView, UpdateView
 
 from main.form import LoginUserForm, RegisterUserForm, AddNoteForm, AIFormSet, TestForm
-from main.models import Note
+from main.models import Note, Reminder
 from slugify import slugify
 from easy_thumbnails.files import get_thumbnailer
 from datetime import datetime
@@ -20,30 +20,22 @@ def index(request):
     return render(request, 'main/index.html', {'title': 'Главная страница'})
 
 
-def mail(request):
-    ml = send_mail(
-        'Subject here',
-        'Here is the message.',
-        'v.zinin@rambler.ru',
-        ['vzinin@list.ru'],
-        fail_silently=False,
-    )
-    print(ml)
-    return render(request, 'main/index.html')
+###########################################################################
+# НАПОМИНАНИЕ
 
+# Все напоминания по авторизованому пользователю
+class Reminders(LoginRequiredMixin, ListView):
+    paginate_by = 10
+    model = Reminder
+    context_object_name = 'reminders'
+    template_name = 'main/reminders.html'
+    extra_context = {'title': 'Напоминания'}
 
-# def notes(request):
-#     return render(request, 'main/notes.html', {'title': 'Заметки'})
-#
+    def get_queryset(self):
+        return Reminder.objects.filter(user=self.request.user)
 
-def test(request):
-    if request.method == 'POST':
-        form = TestForm(request.POST)
-        if form.is_valid():
-            print(form.cleaned_data)
-    else:
-        form = TestForm()
-    return render(request, 'main/test.html', {'form': form})
+###########################################################################
+# ЗАПИСКА
 
 # Все записки по авторизованому пользователю
 class Notes(LoginRequiredMixin, ListView):
@@ -206,3 +198,27 @@ class RegisterUser(CreateView):
         user = form.save()
         login(self.request, user)
         return redirect('main:index')
+
+
+###############################################################################
+# тесты
+def mail(request):
+    ml = send_mail(
+        'Subject here',
+        'Here is the message.',
+        'v.zinin@rambler.ru',
+        ['vzinin@list.ru'],
+        fail_silently=False,
+    )
+    print(ml)
+    return render(request, 'main/index.html')
+
+
+def test(request):
+    if request.method == 'POST':
+        form = TestForm(request.POST)
+        if form.is_valid():
+            print(form.cleaned_data)
+    else:
+        form = TestForm()
+    return render(request, 'main/test.html', {'form': form})

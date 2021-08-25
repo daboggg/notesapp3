@@ -66,7 +66,7 @@ class Reminder(models.Model):
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL')
     content = models.TextField(blank=True, )
     is_once = models.BooleanField(default=True, verbose_name='Однократое напоминание?')
-    date_cron = models.DateTimeField(blank=True, verbose_name='Дата_время напоминания')
+    date_cron = models.DateTimeField(blank=True,null=True, verbose_name='Дата_время напоминания')
     raw_cron = models.CharField(blank=True, max_length=50, verbose_name='Крон выражение напоминания')
     user = models.ForeignKey(User, on_delete=models.PROTECT, verbose_name='User')
 

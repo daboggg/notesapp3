@@ -1,0 +1,14 @@
+{% extends 'layout/basic.html' %}
+{% load bootstrap4 %}
+{% load paginate_tags %}
+
+{% block title %}
+    {{ title|truncatechars:40 }}
+{% endblock %}
+
+{% block content %}
+    {% for reminder in reminders %}
+        {{ reminder }}
+    {% endfor %}
+
+{% endblock %}
