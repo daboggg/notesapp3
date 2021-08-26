@@ -39,10 +39,14 @@ class AddReminderForm(forms.ModelForm):
 # форма добавления записки
 class AddNoteForm(forms.ModelForm):
 
+    # category = forms.ChoiceField(choices=)
+
     MIN_RESOLUTION = (200, 200)
 
     def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user')
         super().__init__(*args, **kwargs)
+        self.fields['category'].queryset = NotesCategory.objects.filter(user=user)
         self.fields['image'].help_text = 'Загружайте изображение с минимальным разрешением {}x{}'.format(*self.MIN_RESOLUTION)
 
     def clean_image(self):

@@ -10,10 +10,16 @@
         {% for cat in categories %}
             {% if cat_selected == cat.slug %}
                 <a class="nav-link active btn-secondary"
-                   href="{{ cat.get_absolute_url }}">{{ cat.name|truncatechars:25 }}</a>
+                   href="{{ cat.get_absolute_url }}">{{ cat.name|truncatechars:25 }}:
+                    <span class="badge badge-pill badge-light">{{ cat.total }}</span>
+                </a>
+
+
             {% else %}
                 <a class="nav-link text-secondary"
-                   href="{{ cat.get_absolute_url }}">{{ cat.name|truncatechars:25 }}</a>
+                   href="{{ cat.get_absolute_url }}">{{ cat.name|truncatechars:25 }}:
+                    <span class="badge badge-pill badge-secondary">{{ cat.total }}</span>
+                </a>
             {% endif %}
         {% endfor %}
     </nav>

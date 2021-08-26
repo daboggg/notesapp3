@@ -120,6 +120,11 @@ class AddNote(LoginRequiredMixin, CreateView):
 
     # success_url = reverse_lazy('main:notes')
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
     def form_valid(self, form):
         fields = form.save(commit=False)
         fields.user = User.objects.get(pk=self.request.user.pk)
@@ -144,6 +149,11 @@ class UpdateNote(LoginRequiredMixin, UpdateView):
     form_class = AddNoteForm
     template_name = 'main/updatenote.html'
     slug_url_kwarg = 'note_slug'
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
 
     def get_queryset(self):
         return Note.objects.filter(slug=self.kwargs[self.slug_url_kwarg], user=self.request.user)
@@ -199,6 +209,7 @@ class AddNotesCategory(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         fields = form.save(commit=False)
+        fields.user = self.request.user
         fields.slug = f'{slugify(fields.name)}-{slugify(str(datetime.now()))}'
         fields.save()
         return super().form_valid(form)

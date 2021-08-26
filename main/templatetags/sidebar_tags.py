@@ -9,7 +9,8 @@ register = template.Library()
 @register.inclusion_tag('parts/sidebar.html', takes_context=True)
 def sidebar_view(context):
     ctx = {
-        'categories': NotesCategory.objects.annotate(total=Count('note')).filter(total__gt=0, note__user=context['user']),
+        # 'categories': NotesCategory.objects.annotate(total=Count('note')).filter(total__gt=0, note__user=context['user']),
+        'categories': NotesCategory.objects.annotate(total=Count('note')).filter(user=context['user']),
     }
 
     if 'cat_selected' in context:
