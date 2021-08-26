@@ -16,10 +16,16 @@
 
 
             {% else %}
+                {% if cat.total > 0 %}
                 <a class="nav-link text-secondary"
                    href="{{ cat.get_absolute_url }}">{{ cat.name|truncatechars:25 }}:
                     <span class="badge badge-pill badge-secondary">{{ cat.total }}</span>
                 </a>
+                {% else %}
+                    <span class="nav-link text-secondary">{{ cat.name|truncatechars:25 }}:
+                    <span class="badge badge-pill badge-secondary">{{ cat.total }}</span>
+                </span>
+                {% endif %}
             {% endif %}
         {% endfor %}
     </nav>
