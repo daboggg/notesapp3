@@ -7,6 +7,7 @@ app_name = 'main'
 urlpatterns =[
     path('', index, name='index'),
     path('aa/', mail, name='mail'),
+    path('addnotescategory/', AddNotesCategory.as_view(), name='addnotescategory'),
     path('addnote/', AddNote.as_view(), name='addnote'),
     path('addreminder/', AddReminder.as_view(), name='addreminder'),
     path('login/', LoginUser.as_view(), name='login'),

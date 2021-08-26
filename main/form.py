@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.forms import inlineformset_factory, ValidationError
 from django.contrib import messages
 
-from main.models import Note, AdditionalImage, Reminder
+from main.models import Note, AdditionalImage, Reminder, NotesCategory
 from PIL import Image
 from .utils import date_range
 
@@ -46,12 +46,13 @@ class AddNoteForm(forms.ModelForm):
         self.fields['image'].help_text = 'Загружайте изображение с минимальным разрешением {}x{}'.format(*self.MIN_RESOLUTION)
 
     def clean_image(self):
-        image = self.cleaned_data['image']
-        img = Image.open(image)
-        min_height, min_width = self.MIN_RESOLUTION
-        if img.height < min_height or img.width < min_width:
-            raise ValidationError('Разрешение изображения меньше минимального!')
-        return image
+        if self.cleaned_data['image']:
+            image = self.cleaned_data['image']
+            img = Image.open(image)
+            min_height, min_width = self.MIN_RESOLUTION
+            if img.height < min_height or img.width < min_width:
+                raise ValidationError('Разрешение изображения меньше минимального!')
+            return image
 
 
     class Meta:
@@ -62,6 +63,16 @@ class AddNoteForm(forms.ModelForm):
 AIFormSet = inlineformset_factory(Note, AdditionalImage, fields='__all__')
 
 
+# форма добавления категории
+class AddNotesCategoryForm(forms.ModelForm):
+
+    class Meta:
+        model = NotesCategory
+        fields = ['name']
+
+
+
+#####################################################################################
 class LoginUserForm(AuthenticationForm):
     username = forms.CharField(label='Логин:', widget=forms.TextInput())
     password = forms.CharField(label='Пароль:', widget=forms.PasswordInput())

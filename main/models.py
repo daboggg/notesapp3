@@ -7,7 +7,7 @@ from .utils import get_timestamp_path
 
 
 class NotesCategory(models.Model):
-    name = models.CharField(max_length=100, db_index=True, verbose_name='Категория')
+    name = models.CharField(max_length=100, unique=True, db_index=True, verbose_name='Категория')
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL')
 
     def __str__(self):

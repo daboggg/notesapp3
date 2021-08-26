@@ -9,7 +9,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, DetailView, DeleteView, UpdateView
 
-from main.form import LoginUserForm, RegisterUserForm, AddNoteForm, AIFormSet, TestForm, AddReminderForm
+from main.form import *
 from main.models import Note, Reminder
 from slugify import slugify
 from easy_thumbnails.files import get_thumbnailer
@@ -187,6 +187,22 @@ class DeleteNote(LoginRequiredMixin, DeleteView):
         else:
             messages.add_message(request, messages.ERROR, 'Удаление не возможно, это не ваша записка')
             return HttpResponseRedirect(self.success_url)
+
+
+
+# добавление категории
+class AddNotesCategory(LoginRequiredMixin, CreateView):
+    form_class = AddNotesCategoryForm
+    template_name = 'main/addnotescategory.html'
+    extra_context = {'title': 'Добавление категории'}
+    success_url = reverse_lazy('main:notes')
+
+    def form_valid(self, form):
+        fields = form.save(commit=False)
+        fields.slug = f'{slugify(fields.name)}-{slugify(str(datetime.now()))}'
+        fields.save()
+        return super().form_valid(form)
+
 
 
 #######################################################################################
