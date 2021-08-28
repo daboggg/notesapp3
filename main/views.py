@@ -50,7 +50,8 @@ class AddReminder(LoginRequiredMixin, CreateView):
         fields.user = self.request.user
         fields.slug = f'{slugify(fields.title)}-{slugify(str(datetime.now()))}'
         fields.save()
-        add_reminder(fields.id)
+        add_reminder(fields)
+        # print(isinstance(fields.date_cron, datetime))
         return super().form_valid(form)
 
     # def get_context_data(self, **kwargs):

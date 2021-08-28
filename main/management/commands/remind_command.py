@@ -1,4 +1,5 @@
 from django.core.management import BaseCommand
+from datetime import datetime
 
 
 class Command(BaseCommand):
@@ -9,5 +10,5 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         id = kwargs.get('id')
         with open('two.txt', 'a') as file:
-            file.write(str(id))
+            file.write(f'{id} : {datetime.now()}')
         print(id)
