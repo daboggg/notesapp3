@@ -12,3 +12,6 @@ def date_range():
     start = now.strftime('%Y-%m-%dT%H:%M')
     finish = now + relativedelta(years=10)
     return {'start': start, 'finish': finish.strftime('%Y-%m-%dT%H:%M')}
+
+def add_reminder(id):
+    print(id)

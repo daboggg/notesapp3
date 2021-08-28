@@ -7,6 +7,8 @@ from django.contrib import messages
 from main.models import Note, AdditionalImage, Reminder, NotesCategory
 from PIL import Image
 from .utils import date_range
+import re
+from notesapp.settings import CRON_REGEX
 
 
 class DateInput(forms.DateInput):
@@ -30,11 +32,22 @@ class TestForm(forms.Form):
 # форма добавления напоминания
 class AddReminderForm(forms.ModelForm):
     date = date_range()
-    date_cron = forms.DateTimeField(widget=DateTimeInput(attrs={'min': date['start'], 'max': date['finish']}))
+    date_cron = forms.DateTimeField(required=False, label='Дата-время напоминания', widget=DateTimeInput(attrs={'min': date['start'], 'max': date['finish']}))
     # date_cron = forms.DateField(widget=DateInput(attrs={'min': '2021-01-01', 'max': '2030-01-01'}))
+
+    def clean_raw_cron(self):
+        if self.cleaned_data['raw_cron']:
+            raw_cron = self.cleaned_data['raw_cron'].strip()
+            if re.fullmatch(CRON_REGEX, raw_cron):
+                return self.cleaned_data['raw_cron']
+            else:
+                raise ValidationError('неправильное выражение')
+        return self.cleaned_data['raw_cron']
+
     class Meta:
         model = Reminder
         fields = ['title', 'content', 'is_once', 'date_cron', 'raw_cron' ]
+
 
 # форма добавления записки
 class AddNoteForm(forms.ModelForm):

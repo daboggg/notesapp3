@@ -14,6 +14,7 @@ from main.models import Note, Reminder
 from slugify import slugify
 from easy_thumbnails.files import get_thumbnailer
 from datetime import datetime
+from .utils import add_reminder
 
 
 def index(request):
@@ -42,16 +43,15 @@ class AddReminder(LoginRequiredMixin, CreateView):
     extra_context = {'title': 'Добавление напоминания'}
     success_url = reverse_lazy('main:reminders')
 
-    # def form_valid(self, form):
-    #     fields = form.save(commit=False)
-    #     fields.user = User.objects.get(pk=self.request.user.pk)
-    #     fields.slug = f'{slugify(fields.title)}-{slugify(str(datetime.now()))}'
-    #     fields.save()
-    #     formset = AIFormSet(self.request.POST, self.request.FILES, instance=fields)
-    #     if formset.is_valid():
-    #         formset.save()
-    #         messages.add_message(self.request, messages.SUCCESS, 'Записка добавлена')
-    #     return super().form_valid(form)
+
+
+    def form_valid(self, form):
+        fields = form.save(commit=False)
+        fields.user = self.request.user
+        fields.slug = f'{slugify(fields.title)}-{slugify(str(datetime.now()))}'
+        fields.save()
+        add_reminder(fields.id)
+        return super().form_valid(form)
 
     # def get_context_data(self, **kwargs):
     #     context = super().get_context_data(**kwargs)

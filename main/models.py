@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse, reverse_lazy
 from easy_thumbnails.files import get_thumbnailer
@@ -68,8 +69,12 @@ class Reminder(models.Model):
     content = models.TextField(blank=True, verbose_name='Текст напоминания')
     is_once = models.BooleanField(default=True, verbose_name='Однократое напоминание?')
     date_cron = models.DateTimeField(blank=True,null=True, verbose_name='Дата_время напоминания')
-    raw_cron = models.CharField(blank=True, max_length=50, verbose_name='Крон выражение напоминания')
+    raw_cron = models.CharField(blank=True, max_length=50, verbose_name='Крон выражение')
     user = models.ForeignKey(User, on_delete=models.PROTECT, verbose_name='User')
+
+    def clean(self):
+        if not self.date_cron and not self.raw_cron:
+            raise ValidationError('поле "крон выражение" или "дата-время напоминания" должно быть заполнено')
 
     def __str__(self):
         return self.title
@@ -80,3 +85,4 @@ class Reminder(models.Model):
     class Meta:
         verbose_name = 'Напоминание'
         verbose_name_plural = 'Напоминания'
+        ordering  = ['id']
