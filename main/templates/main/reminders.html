@@ -7,9 +7,35 @@
 {% endblock %}
 
 {% block content %}
-    <a href="{% url 'main:addreminder' %}">add</a>
-    {% for reminder in reminders %}
-        {{ reminder }}
-    {% endfor %}
+    <div class="container">
+        <div class="row mt-4">
+            <div class="col">
+                <table class="table table-striped">
+                    <tbody>
+                    {% for reminder in reminders %}
+                    <tr >
+                        <th class="text-center align-middle" scope="row">{{ forloop.counter }}</th>
+                        <td class="align-middle h5">{{ reminder.title|truncatechars:50}}</td>
+                        <td class="align-middle text-right">
+                            <button class="btn btn-secondary">Подробнее</button>
+                        </td>
+                        <td class="align-middle text-center">
+                            <a style="color:inherit" href="#"><span
+                                        class="h5 oi oi-trash"></span></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="bt-float">
+        <form action="{% url 'main:addreminder' %}">
+            <button class="btn btn-secondary btn-lg btn-circle">
+                <span style="font-size: 1.7rem" class="oi oi-plus"></span>
+            </button>
+        </form>
+    </div>
 
 {% endblock %}
