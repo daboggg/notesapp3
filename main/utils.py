@@ -27,3 +27,8 @@ def add_reminder(fields):
             job.setall(fields.date_cron)
         else:
             job.setall(fields.raw_cron)
+
+# удаляет запись из crontab
+def delete_reminder(id):
+    with CronTab(user='daboggg') as cron:
+        cron.remove_all(comment=str(id))

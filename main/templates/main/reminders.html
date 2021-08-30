@@ -17,10 +17,12 @@
                         <th class="text-center align-middle" scope="row">{{ forloop.counter }}</th>
                         <td class="align-middle h5">{{ reminder.title|truncatechars:50}}</td>
                         <td class="align-middle text-right">
-                            <button class="btn btn-secondary">Подробнее</button>
+{#                            <button class="btn btn-secondary">Подробнее</button>#}
+                            <a style="color:inherit" href="#"><span
+                                        class="h4 oi oi-ellipses"></span></a>
                         </td>
                         <td class="align-middle text-center">
-                            <a style="color:inherit" href="#"><span
+                            <a style="color:inherit" href="{% url 'main:deletereminder' reminder.slug %}"><span
                                         class="h5 oi oi-trash"></span></a>
                         </td>
                     </tr>

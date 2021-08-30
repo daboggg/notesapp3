@@ -14,7 +14,7 @@ from main.models import Note, Reminder
 from slugify import slugify
 from easy_thumbnails.files import get_thumbnailer
 from datetime import datetime
-from .utils import add_reminder
+from .utils import *
 
 
 def index(request):
@@ -54,11 +54,24 @@ class AddReminder(LoginRequiredMixin, CreateView):
         # print(isinstance(fields.date_cron, datetime))
         return super().form_valid(form)
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context['formset'] = AIFormSet()
-    #     context['title'] = 'Добавление записки'
-    #     return context
+
+# удаление напоминания
+class DeleteReminder(LoginRequiredMixin, DeleteView):
+    model = Reminder
+    slug_url_kwarg = 'reminder_slug'
+    success_url = reverse_lazy('main:reminders')
+    extra_context = {'title': 'Удаление напоминания'}
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if self.object.user == request.user:
+            # удаление записки
+            delete_reminder(self.object.id)
+            self.object.delete()
+            return HttpResponseRedirect(self.success_url)
+        else:
+            messages.add_message(request, messages.ERROR, 'Удаление не возможно, это не вашe напоминание')
+            return HttpResponseRedirect(self.success_url)
 
 ###########################################################################
 # ЗАПИСКА
