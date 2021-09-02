@@ -24,6 +24,21 @@ def index(request):
 ###########################################################################
 # НАПОМИНАНИЕ
 
+
+# одно напоминание  детально
+class ShowReminder(LoginRequiredMixin, DetailView):
+    model = Reminder
+    template_name = 'main/reminder.html'
+    slug_url_kwarg = 'reminder_slug'
+    context_object_name = 'reminder'
+    extra_context = {'title': 'Напоминание'}
+
+    def get_object(self, queryset=None):
+        try:
+            return Reminder.objects.get(slug=self.kwargs['reminder_slug'], user=self.request.user)
+        except Exception:
+            raise Http404('Нет такого напоминания')
+
 # Все напоминания по авторизованому пользователю
 class Reminders(LoginRequiredMixin, ListView):
     paginate_by = 10

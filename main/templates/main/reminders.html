@@ -18,7 +18,7 @@
                         <td class="align-middle h5">{{ reminder.title|truncatechars:50}}</td>
                         <td class="align-middle text-right">
 {#                            <button class="btn btn-secondary">Подробнее</button>#}
-                            <a style="color:inherit" href="#"><span
+                            <a style="color:inherit" href="{{ reminder.get_absolute_url }}"><span
                                         class="h4 oi oi-ellipses"></span></a>
                         </td>
                         <td class="align-middle text-center">

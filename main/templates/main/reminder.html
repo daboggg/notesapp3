@@ -1,0 +1,44 @@
+{% extends 'layout/basic.html' %}
+{% load bootstrap4 %}
+{% load sidebar_tags %}
+{% load static %}
+{% load thumbnail %}
+
+{% block title %}
+    {{ title|truncatechars:40 }}
+{% endblock %}
+
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-sm-8 col-lg-6">
+            <div class="card">
+                <div class="card-header bg-secondary text-white">
+                    <div class="row  justify-content-between">
+                        <div class="ml-2 h4">
+                            Напоминание
+                        </div>
+                        <div>
+                        <span class="mr-2">
+                            <a style="color:inherit" href="#"><span
+                                    class="oi oi-pencil mr-3 h4"></span></a>
+                            <a style="color:inherit"
+                               href="{% url 'main:deletereminder' reminder.slug %}"><span
+                                    class="oi oi-trash h4"></span></a>
+                        </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title h4">{{ reminder.title}}</h5>
+                    <p class="card-text h5 mt-4">
+                        <i>
+                            {{ reminder.content }}
+                        </i>
+                        </p>
+                    <p class="mt-4">Cron-выражение: <i>{{ reminder.raw_cron }}</i></p>
+                    <p>Дата-время напоминания: <i>{{ reminder.date_cron }}</i></p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
