@@ -55,7 +55,7 @@ class Reminders(LoginRequiredMixin, ListView):
 class AddReminder(LoginRequiredMixin, CreateView):
     form_class = AddReminderForm
     template_name = 'main/addreminder.html'
-    extra_context = {'title': 'Добавление напоминания'}
+    extra_context = {'title': 'Добавление напоминания','button_name': 'Создать'}
     success_url = reverse_lazy('main:reminders')
 
 
@@ -69,6 +69,20 @@ class AddReminder(LoginRequiredMixin, CreateView):
         # print(isinstance(fields.date_cron, datetime))
         return super().form_valid(form)
 
+# редактирование напоминания
+class UpdateReminder(LoginRequiredMixin, UpdateView):
+    model = Reminder
+    form_class = AddReminderForm
+    template_name = 'main/addreminder.html'
+    slug_url_kwarg = 'reminder_slug'
+    extra_context = {'title': 'Редактирование напоминания', 'button_name': 'Исправить'}
+
+    def get_queryset(self):
+        return Reminder.objects.filter(slug=self.kwargs[self.slug_url_kwarg], user=self.request.user)
+
+    def form_valid(self, form):
+        messages.add_message(self.request, messages.SUCCESS, 'Напоминание исправлено')
+        return super().form_valid(form)
 
 # удаление напоминания
 class DeleteReminder(LoginRequiredMixin, DeleteView):
@@ -193,7 +207,6 @@ class UpdateNote(LoginRequiredMixin, UpdateView):
         # fields.slug = f'{slugify(fields.title)}-{slugify(str(datetime.now()))}'
         fields.save()
         formset = AIFormSet(self.request.POST, self.request.FILES, instance=fields)
-        print(self.request.POST)
         if formset.is_valid():
             formset.save()
             messages.add_message(self.request, messages.SUCCESS, 'Записка исправлена')

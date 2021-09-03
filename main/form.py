@@ -32,7 +32,7 @@ class TestForm(forms.Form):
 # форма добавления напоминания
 class AddReminderForm(forms.ModelForm):
     date = date_range()
-    date_cron = forms.DateTimeField(required=False, label='Дата-время напоминания', widget=DateTimeInput(attrs={'min': date['start'], 'max': date['finish']}))
+    date_cron = forms.DateTimeField(required=False, label='Дата-время напоминания', widget=DateTimeInput(format='%Y-%m-%dT%H:%M', attrs={'min': date['start'], 'max': date['finish']}))
     # date_cron = forms.DateField(widget=DateInput(attrs={'min': '2021-01-01', 'max': '2030-01-01'}))
 
     def clean_raw_cron(self):
