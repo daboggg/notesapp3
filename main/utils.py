@@ -59,6 +59,6 @@ def send_activation_notification(user, request):
                                     to=[user.email])
         em.attach_alternative(body_html, 'text/html')
         em.send()
-        messages.add_message(request, messages.SUCCESS, 'На ваш адрес отправлен email')
+        messages.add_message(request, messages.SUCCESS, f'На {user.email} отправлено сообщение')
     except Exception as e:
         messages.add_message(request, messages.ERROR, e)
