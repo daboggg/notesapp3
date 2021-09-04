@@ -7,7 +7,11 @@
 {% block content %}
     <div class="container-fluid">
     {% if user.is_authenticated %}
+        {% if user.first_name and user.last_name  %}
+        <div class="h2">Привет, {{ user.first_name }} {{ user.last_name }}!</div>
+        {% else %}
         <div class="h2">Привет, {{ user.username }}!</div>
+        {% endif %}
     {% else %}
         <div class="h2">Пожалуйста войдите в приложение</div>
     {% endif %}

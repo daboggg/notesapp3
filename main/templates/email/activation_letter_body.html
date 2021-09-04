@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<h3>Уважаемый пользователь {{ user.username }}!</h3>
+
+<p>Вы зарегистрировались в приложении "Notesapp".
+Вам необходимо выполнить активацию, чтобы подтвердить свою личность.
+Для этого пройдите, пожалуйста, по ссылке</p>
+
+<a href="{{ host }}{% url 'main:register_activate' sign=sign %}">активация</a>
+
+<p>До свидания!</p>
+
+<p>С уважением, администрация приложения "Notesapp".</p>
+
+</body>
+</html>

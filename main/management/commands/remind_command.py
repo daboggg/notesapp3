@@ -23,7 +23,7 @@ class Command(BaseCommand):
             return
 
         context={'r': r}
-        s = render_to_string('parts/mail.html', context)
+        s = render_to_string('email/mail.html', context)
         try:
             em = EmailMultiAlternatives(subject=r.title, body=r.content,from_email=settings.DEFAULT_FROM_EМAIL, to=[r.user.email])
             em.attach_alternative(s, 'text/html')
