@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.forms import inlineformset_factory, ValidationError
 from django.contrib import messages
 
-from main.models import Note, AdditionalImage, Reminder, NotesCategory
+from main.models import Note, AdditionalImage, Reminder, NotesCategory, AdvUser
 from PIL import Image
 from .utils import date_range
 import re
@@ -102,5 +102,5 @@ class RegisterUserForm(UserCreationForm):
     password2 = forms.CharField(label='Повтор пароля', widget=forms.PasswordInput())
 
     class Meta:
-        model = User
+        model = AdvUser
         fields = ('username', 'email', 'password1', 'password2',)

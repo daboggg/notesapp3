@@ -10,7 +10,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, DetailView, DeleteView, UpdateView
 
 from main.form import *
-from main.models import Note, Reminder
+from main.models import Note, Reminder, AdvUser
 from slugify import slugify
 from easy_thumbnails.files import get_thumbnailer
 from datetime import datetime
@@ -170,7 +170,7 @@ class AddNote(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         fields = form.save(commit=False)
-        fields.user = User.objects.get(pk=self.request.user.pk)
+        fields.user = self.request.user
         fields.slug = f'{slugify(fields.title)}-{slugify(str(datetime.now()))}'
         fields.save()
         formset = AIFormSet(self.request.POST, self.request.FILES, instance=fields)

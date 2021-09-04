@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AbstractUser
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse, reverse_lazy
@@ -7,10 +7,16 @@ from easy_thumbnails.files import get_thumbnailer
 from .utils import get_timestamp_path
 
 
+class AdvUser(AbstractUser):
+    is_activated = models.BooleanField(default=False, db_index=True, verbose_name='Прошел активацию?')
+
+    class Meta(AbstractUser.Meta):
+        pass
+
 class NotesCategory(models.Model):
     name = models.CharField(max_length=100, db_index=True, verbose_name='Категория')
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL')
-    user = models.ForeignKey(User, on_delete=models.PROTECT, verbose_name='User', default=1)
+    user = models.ForeignKey(AdvUser, on_delete=models.PROTECT, verbose_name='User', default=1)
 
     def __str__(self):
         return self.name
@@ -32,7 +38,7 @@ class Note(models.Model):
     time_update = models.DateTimeField(auto_now=True, verbose_name='Время изменения')
     is_published = models.BooleanField(default=True, verbose_name='Опубликован?')
     category = models.ForeignKey(NotesCategory, on_delete=models.PROTECT, verbose_name='Категория')
-    user = models.ForeignKey(User, on_delete=models.PROTECT, verbose_name='User')
+    user = models.ForeignKey(AdvUser, on_delete=models.PROTECT, verbose_name='User')
 
     def delete(self, *args, **kwargs):
         for ai in self.additionalimage_set.all():
@@ -70,7 +76,7 @@ class Reminder(models.Model):
     is_once = models.BooleanField(default=True, verbose_name='Однократое напоминание?')
     date_cron = models.DateTimeField(blank=True,null=True, verbose_name='Дата_время напоминания')
     raw_cron = models.CharField(blank=True, max_length=50, verbose_name='Крон выражение')
-    user = models.ForeignKey(User, on_delete=models.PROTECT, verbose_name='User')
+    user = models.ForeignKey(AdvUser, on_delete=models.PROTECT, verbose_name='User')
 
     def clean(self):
         if not self.date_cron and not self.raw_cron:
@@ -86,3 +92,6 @@ class Reminder(models.Model):
         verbose_name = 'Напоминание'
         verbose_name_plural = 'Напоминания'
         ordering  = ['id']
+
+
+
