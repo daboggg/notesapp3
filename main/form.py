@@ -98,9 +98,18 @@ class LoginUserForm(AuthenticationForm):
 class RegisterUserForm(UserCreationForm):
     username = forms.CharField(label='Логин', widget=forms.TextInput())
     email = forms.EmailField(label='Email', widget=forms.EmailInput())
+    first_name = forms.CharField(required=False, label='Имя', widget=forms.TextInput())
+    last_name = forms.CharField(required=False, label='Фамилия', widget=forms.TextInput())
     password1 = forms.CharField(label='Пароль', widget=forms.PasswordInput())
     password2 = forms.CharField(label='Повтор пароля', widget=forms.PasswordInput())
 
     class Meta:
         model = AdvUser
-        fields = ('username', 'email', 'password1', 'password2',)
+        fields = ('username', 'email', 'first_name', 'last_name', 'password1', 'password2',)
+
+
+class ChangeUserinfoForm(forms.ModelForm):
+    email = forms.EmailField(required=True, label= 'Aдpec электронной почты')
+    class Meta:
+        model = AdvUser
+        fields = ('username', 'email', 'first_name', 'last_name')

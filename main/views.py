@@ -3,6 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
 from django.contrib import messages
+from django.contrib.messages.views import SuccessMessageMixin
 from django.core.mail import send_mail
 from django.core.signing import BadSignature
 from django.http import Http404, HttpResponseRedirect
@@ -319,8 +320,34 @@ def user_activate(request, sign):
 
 def send_repeat_email_activation(request):
     send_activation_notification(request.user, request)
-    # messages.add_message(request, messages.SUCCESS, f'email для активации выслан на {request.user.email}')
     return redirect('main:index')
+
+
+class ChangeUserInfoView(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+    model = AdvUser
+    template_name = 'main/change_user_info.html'
+    form_class = ChangeUserinfoForm
+    success_url = reverse_lazy('main:index')
+    success_message = 'Данные пользователя изменены'
+    extra_context = {'title': 'Изменение данных пользователя'}
+
+    def setup(self, request, *args, **kwargs):
+        self.user_id = request.user.pk
+        return super().setup(request, *args, **kwargs)
+
+    def get_object(self, queryset=None):
+        if not queryset:
+            queryset = self.get_queryset()
+        return get_object_or_404(queryset, pk=self.user_id)
+
+    def form_valid(self, form):
+        fields = form.save(commit=False)
+        # fields.user = self.request.user
+        if fields.email != self.request.user.email:
+            fields.is_activated = False
+            messages.add_message(self.request, messages.WARNING, r'Вы изменили email придется пройти активацию еще раз')
+        fields.save()
+        return super().form_valid(form)
 
 
 ###############################################################################

@@ -25,4 +25,5 @@ urlpatterns =[
     path('notes_by_category/<slug:cat_slug>/', NotesByCategory.as_view(), name='notes_by_category'),
     path('register/activate/<str:sign>/', user_activate, name='register_activate'),
     path('register/repeat/activate/', send_repeat_email_activation, name='repeat_activate'),
+    path('change/user/info/', ChangeUserInfoView.as_view(), name='change_user_info'),
 ]
