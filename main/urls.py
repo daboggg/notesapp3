@@ -24,4 +24,5 @@ urlpatterns =[
     path('updatereminder/<slug:reminder_slug>/', UpdateReminder.as_view(), name='updatereminder'),
     path('notes_by_category/<slug:cat_slug>/', NotesByCategory.as_view(), name='notes_by_category'),
     path('register/activate/<str:sign>/', user_activate, name='register_activate'),
+    path('register/repeat/activate/', send_repeat_email_activation, name='repeat_activate'),
 ]

@@ -65,10 +65,16 @@ class AddReminder(LoginRequiredMixin, CreateView):
         fields = form.save(commit=False)
         fields.user = self.request.user
         fields.slug = f'{slugify(fields.title)}-{slugify(str(datetime.now()))}'
-        fields.save()
-        add_reminder(fields)
-        # print(isinstance(fields.date_cron, datetime))
-        return super().form_valid(form)
+
+        if self.request.user.is_activated:
+            messages.add_message(self.request, messages.SUCCESS, 'Напоминание добавлено')
+            fields.save()
+            add_reminder(fields)
+            return super().form_valid(form)
+        else:
+            messages.add_message(self.request, messages.WARNING, 'Перед добавлением напоминания пройдите активацию')
+            return self.render_to_response(self.get_context_data(form=form))
+
 
 # редактирование напоминания
 class UpdateReminder(LoginRequiredMixin, UpdateView):
@@ -310,6 +316,11 @@ def user_activate(request, sign):
         user.is_activated = True
         user.save()
     return render(request, template)
+
+def send_repeat_email_activation(request):
+    send_activation_notification(request.user, request)
+    # messages.add_message(request, messages.SUCCESS, f'email для активации выслан на {request.user.email}')
+    return redirect('main:index')
 
 
 ###############################################################################
