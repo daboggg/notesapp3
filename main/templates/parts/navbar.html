@@ -35,7 +35,7 @@
 
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
                             <a class="dropdown-item h4" href="{% url 'main:change_user_info' %}">Изменить информацию о пользователе</a>
-                            <a class="dropdown-item h4" href="#">Изменить пароль</a>
+                            <a class="dropdown-item h4" href="{% url 'main:change_user_password' %}">Изменить пароль</a>
                             {% if not user.is_activated %}
                             <a class="dropdown-item h4" href="{% url 'main:repeat_activate' %}">Активация аккаунта</a>
                             {% endif %}

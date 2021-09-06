@@ -1,7 +1,7 @@
 from django.contrib.auth import logout, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, PasswordChangeView
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.mail import send_mail
@@ -348,6 +348,13 @@ class ChangeUserInfoView(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
             messages.add_message(self.request, messages.WARNING, r'Вы изменили email придется пройти активацию еще раз')
         fields.save()
         return super().form_valid(form)
+
+
+class AppPasswordChangeView(SuccessMessageMixin, LoginRequiredMixin, PasswordChangeView):
+    template_name = 'main/password_change.html'
+    success_url = reverse_lazy('main:index')
+    success_message = 'Пароль пользователя изменен'
+    extra_context = {'title': 'Смена пароля'}
 
 
 ###############################################################################

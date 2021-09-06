@@ -136,3 +136,5 @@ CRON_REGEX = r'(((([*])|(((([0-5])?[0-9])((-(([0-5])?[0-9])))?)))((/(([0-9])?([0
 
 DEFAULT_FROM_EМAIL = 'v.zinin@rambler.ru'
 EMAIL_TIMEOUT = 20
+
+SESSION_COOKIE_AGE = 60*60

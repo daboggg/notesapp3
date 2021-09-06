@@ -26,4 +26,5 @@ urlpatterns =[
     path('register/activate/<str:sign>/', user_activate, name='register_activate'),
     path('register/repeat/activate/', send_repeat_email_activation, name='repeat_activate'),
     path('change/user/info/', ChangeUserInfoView.as_view(), name='change_user_info'),
+    path('change/user/password/', AppPasswordChangeView.as_view(), name='change_user_password'),
 ]
