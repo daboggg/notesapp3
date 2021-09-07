@@ -31,9 +31,9 @@
                 <div class="card-body">
                     <h5 class="card-title h4">{{ reminder.title}}</h5>
                     <p class="card-text h5 mt-4">
-                        <i>
+                        {% autoescape off %}
                             {{ reminder.content }}
-                        </i>
+                        {% endautoescape %}
                         </p>
                     <p class="mt-4">Cron-выражение: <i>{{ reminder.raw_cron }}</i></p>
                     <p>Дата-время напоминания: <i>{{ reminder.date_cron }}</i></p>

@@ -1,3 +1,4 @@
+from ckeditor.widgets import CKEditorWidget
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
@@ -34,6 +35,7 @@ class AddReminderForm(forms.ModelForm):
     date = date_range()
     date_cron = forms.DateTimeField(required=False, label='Дата-время напоминания', widget=DateTimeInput(format='%Y-%m-%dT%H:%M', attrs={'min': date['start'], 'max': date['finish']}))
     # date_cron = forms.DateField(widget=DateInput(attrs={'min': '2021-01-01', 'max': '2030-01-01'}))
+    content = forms.CharField(required=False, widget=CKEditorWidget())
 
     def clean_raw_cron(self):
         if self.cleaned_data['raw_cron']:
@@ -52,7 +54,7 @@ class AddReminderForm(forms.ModelForm):
 # форма добавления записки
 class AddNoteForm(forms.ModelForm):
 
-    # category = forms.ChoiceField(choices=)
+    content = forms.CharField(required=False, widget=CKEditorWidget())
 
     MIN_RESOLUTION = (200, 200)
 

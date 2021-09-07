@@ -43,10 +43,19 @@
 
 
                 <div class="card-body">
-                    <h5 class="card-title">{{ note.title }}</h5>
-                    <p class="card-text"><i>{{ note.content }}</i></p>
+                    <h3 class="card-title text-center my-4">{{ note.title }}</h3>
+                    {% if note.content %}
+                    <div style="border: black solid 1px; padding: 1rem" class="card-text">
+                        {% autoescape off %}
+                            {{ note.content }}
+                        {% endautoescape %}
+                    </div>
+                    {% else %}
+                        <div class="card-text">No content</div>
+                    {% endif %}
                     <p class="card-text"><small class="text-muted">Последнее обновление: {{ note.time_update }}</small>
                     </p>
+                <div class="dropdown-divider"></div>
 
                     {#                карусель#}
                     <div class="row justify-content-center">
@@ -82,7 +91,12 @@
                                 </a>
                             </div>
 
-                            <div class="h3 mt-5 mb-3py">Файлы:</div>
+
+
+                            {% if  note.additionalfile_set.all|length != 0 %}
+                                <div class="h3 mt-5 mb-3py">Файлы:</div>
+                            {% endif %}
+
 
 
                             <div class="list-group">

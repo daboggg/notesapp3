@@ -8,11 +8,16 @@
 {% block content %}
 
     <div class="row justify-content-center mt-5">
-        <div class="col-md-6">
-            <div class="h1">Редактирование записки</div>
+        <div class="col-md-10">
+            <div class="h1 text-center">Редактирование записки</div>
             <form class="mb-3" method="post" enctype="multipart/form-data">
+                {% if note %}
+
+                {% endif %}
                 {% csrf_token %}
+                {{ form.media }}
                 {% bootstrap_form form layout='horizontal' %}
+{#                {{form.as_p}}#}
 
                 <div id="accordion">
                     <div class="">

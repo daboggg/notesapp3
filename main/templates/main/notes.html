@@ -31,7 +31,12 @@
 
                         <div class="card-body">
                             <h5 class="card-title">{{ note.title|truncatechars:40 }}</h5>
-                            <p class="card-text"><i>{{ note.content|truncatechars:60 }}</i></p>
+{#                            <p class="card-text"><i>{{ note.content|truncatechars:60 }}</i></p>#}
+{#                            <p class="card-text">#}
+{#                                {% autoescape off %}#}
+{#                                    {{ note.content }}#}
+{#                                {% endautoescape %}#}
+{#                            </p>#}
                             <div class="row justify-content-center">
                                 <a href="{{ note.get_absolute_url }}" class="btn btn-secondary">Подробнее...</a>
                                 <a href="{% url 'main:deletenote' note.slug %}" class="btn btn-secondary ml-3"><span
