@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.forms import inlineformset_factory, ValidationError
 from django.contrib import messages
 
-from main.models import Note, AdditionalImage, Reminder, NotesCategory, AdvUser
+from main.models import Note, AdditionalImage, Reminder, NotesCategory, AdvUser, AdditionalFile
 from PIL import Image
 from .utils import date_range
 import re
@@ -78,6 +78,9 @@ class AddNoteForm(forms.ModelForm):
 
 
 AIFormSet = inlineformset_factory(Note, AdditionalImage, fields='__all__')
+
+
+AFFormSet = inlineformset_factory(Note, AdditionalFile, fields='__all__')
 
 
 # форма добавления категории

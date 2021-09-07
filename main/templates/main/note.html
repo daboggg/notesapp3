@@ -3,6 +3,7 @@
 {% load sidebar_tags %}
 {% load static %}
 {% load thumbnail %}
+{% load filename_tags %}
 
 {% block title %}
     {{ title|truncatechars:40 }}
@@ -20,7 +21,8 @@
                         </div>
                         <span class="col-auto">
                             <span>
-                                <a style="color:inherit" href="{% url 'main:updatenote' note.slug %}"><span class="oi oi-pencil mr-3"></span></a>
+                                <a style="color:inherit" href="{% url 'main:updatenote' note.slug %}"><span
+                                        class="oi oi-pencil mr-3"></span></a>
                                 <a style="color:inherit" href="{% url 'main:deletenote' note.slug %}"><span
                                         class="oi oi-trash"></span></a>
                             </span>
@@ -28,7 +30,7 @@
                     </div>
                 </div>
 
-{#            картинка#}
+                {#            картинка#}
                 <div class="text-center">
                     {% if note.image %}
                         <a href="{{ note.image.url }}"><img class="img-thumbnail"
@@ -46,7 +48,7 @@
                     <p class="card-text"><small class="text-muted">Последнее обновление: {{ note.time_update }}</small>
                     </p>
 
-{#                карусель#}
+                    {#                карусель#}
                     <div class="row justify-content-center">
                         <div class="col-md-6">
                             <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
@@ -55,13 +57,15 @@
                                     {% for img in note.additionalimage_set.all %}
                                         {% if forloop.first %}
                                             <div class="carousel-item active">
-                                                <a href="{{img.image.url}}"><img class="img-thumbnail" src="{% thumbnail img.image '400x400' %}"
-                                                     alt=""></a>
+                                                <a href="{{ img.image.url }}"><img class="img-thumbnail"
+                                                                                   src="{% thumbnail img.image '400x400' %}"
+                                                                                   alt=""></a>
                                             </div>
                                         {% else %}
                                             <div class="carousel-item">
-                                                <a href="{{img.image.url}}"><img class="img-thumbnail" src="{% thumbnail img.image '400x400' %}"
-                                                     alt=""></a>
+                                                <a href="{{ img.image.url }}"><img class="img-thumbnail"
+                                                                                   src="{% thumbnail img.image '400x400' %}"
+                                                                                   alt=""></a>
                                             </div>
                                         {% endif %}
                                     {% endfor %}
@@ -77,6 +81,21 @@
                                     <span class="sr-only">Next</span>
                                 </a>
                             </div>
+
+                            <div class="h3 mt-5 mb-3py">Файлы:</div>
+
+
+                            <div class="list-group">
+                            {% for file in note.additionalfile_set.all %}
+                                <a href="{{ file.file.url }}" class="h5 list-group-item list-group-item-action">
+                                    {{ file.file.name|flnm }}
+                                </a>
+                            {% endfor %}
+                            </div>
+
+
+
+
                         </div>
                     </div>
 

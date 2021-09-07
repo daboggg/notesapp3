@@ -182,14 +182,18 @@ class AddNote(LoginRequiredMixin, CreateView):
         fields.slug = f'{slugify(fields.title)}-{slugify(str(datetime.now()))}'
         fields.save()
         formset = AIFormSet(self.request.POST, self.request.FILES, instance=fields)
+        formset_files = AFFormSet(self.request.POST, self.request.FILES, instance=fields)
         if formset.is_valid():
             formset.save()
-            messages.add_message(self.request, messages.SUCCESS, 'Записка добавлена')
+        if formset_files.is_valid():
+            formset_files.save()
+        messages.add_message(self.request, messages.SUCCESS, 'Записка добавлена')
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['formset'] = AIFormSet()
+        context['formset_files'] = AFFormSet()
         context['title'] = 'Добавление записки'
         return context
 
@@ -215,14 +219,18 @@ class UpdateNote(LoginRequiredMixin, UpdateView):
         # fields.slug = f'{slugify(fields.title)}-{slugify(str(datetime.now()))}'
         fields.save()
         formset = AIFormSet(self.request.POST, self.request.FILES, instance=fields)
+        formset_files = AFFormSet(self.request.POST, self.request.FILES, instance=fields)
         if formset.is_valid():
             formset.save()
-            messages.add_message(self.request, messages.SUCCESS, 'Записка исправлена')
+        if formset_files.is_valid():
+            formset_files.save()
+        messages.add_message(self.request, messages.SUCCESS, 'Записка исправлена')
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['formset'] = AIFormSet(instance=self.object)
+        context['formset_files'] = AFFormSet(instance=self.object)
         context['title'] = 'Редактирование записки'
         return context
 

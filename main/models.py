@@ -69,6 +69,15 @@ class AdditionalImage(models.Model):
         verbose_name = 'Дополнительная иллюстрация'
 
 
+class AdditionalFile(models.Model):
+    note = models.ForeignKey(Note, on_delete=models.CASCADE, verbose_name='Записка')
+    file = models.FileField(upload_to="files/%Y/%m/%d/", verbose_name='Файл')
+
+    class Meta:
+        verbose_name_plural = 'Файл'
+        verbose_name = 'Файлы'
+
+
 class Reminder(models.Model):
     title = models.CharField(max_length=100, db_index=True, verbose_name='Заголовок')
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL')
