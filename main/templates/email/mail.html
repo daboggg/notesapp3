@@ -11,6 +11,11 @@
     <p align="center"style="padding: 5px; font-size: 2rem; background-color: red">Здравствуйте {{ r.user }} вы просили напомнить вам</p>
 {% endif %}
 <p align="center"style="padding: 5px; font-size: 2rem">{{ r.title }}</p>
-<p style="margin-left: 10%; margin-right: 10%; font-size: 1.5rem">{{ r.content }}</p>
+{#<p style="margin-left: 10%; margin-right: 10%; font-size: 1.5rem">{{ r.content }}</p>#}
+<div>
+    {% autoescape off %}
+        {{ r.content }}
+    {% endautoescape %}
+</div>
 </body>
 </html>
