@@ -13,7 +13,9 @@
     <div class="row">
         {% sidebar_view %}
         <div class="col">
-{#            {% pagination_view %}#}
+            {% if notes.all|length == 0 %}
+                <div class="text-center h3 mt-5">Нет записок</div>
+            {% endif %}
             <div class="card-columns">
                 {% for note in notes %}
                     <div class="card col-10 offset-1 col-sm-12 offset-sm-0 px-0">
@@ -31,12 +33,12 @@
 
                         <div class="card-body">
                             <h5 class="card-title">{{ note.title|truncatechars:40 }}</h5>
-{#                            <p class="card-text"><i>{{ note.content|truncatechars:60 }}</i></p>#}
-{#                            <p class="card-text">#}
-{#                                {% autoescape off %}#}
-{#                                    {{ note.content }}#}
-{#                                {% endautoescape %}#}
-{#                            </p>#}
+                            {#                            <p class="card-text"><i>{{ note.content|truncatechars:60 }}</i></p>#}
+                            {#                            <p class="card-text">#}
+                            {#                                {% autoescape off %}#}
+                            {#                                    {{ note.content }}#}
+                            {#                                {% endautoescape %}#}
+                            {#                            </p>#}
                             <div class="row justify-content-center">
                                 <a href="{{ note.get_absolute_url }}" class="btn btn-secondary">Подробнее...</a>
                                 <a href="{% url 'main:deletenote' note.slug %}" class="btn btn-secondary ml-3"><span

@@ -256,6 +256,8 @@ class DeleteNote(LoginRequiredMixin, DeleteView):
             messages.add_message(request, messages.ERROR, 'Удаление не возможно, это не ваша записка')
             return HttpResponseRedirect(self.success_url)
 
+########################################################################################
+# Категории
 
 
 # добавление категории
@@ -271,6 +273,26 @@ class AddNotesCategory(LoginRequiredMixin, CreateView):
         fields.slug = f'{slugify(fields.name)}-{slugify(str(datetime.now()))}'
         fields.save()
         return super().form_valid(form)
+
+
+# удаление категории
+class DeleteCategory(LoginRequiredMixin, DeleteView):
+
+    model = NotesCategory
+    slug_url_kwarg = 'cat_slug'
+    success_url = reverse_lazy('main:notes')
+    extra_context = {'title': 'Удаление категории'}
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if self.object.user == request.user:
+
+            # удаление записки
+            self.object.delete()
+            return HttpResponseRedirect(self.success_url)
+        else:
+            messages.add_message(request, messages.ERROR, 'Удаление не возможно, это не ваша категория')
+            return HttpResponseRedirect(self.success_url)
 
 
 

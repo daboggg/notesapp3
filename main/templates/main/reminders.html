@@ -10,6 +10,10 @@
     <div class="container">
         <div class="row mt-4">
             <div class="col">
+                {% if reminders.all|length == 0 %}
+                    <div class="text-center h3">Напоминаний нет</div>
+                {% endif %}
+
                 <table class="table table-striped">
                     <tbody>
                     {% for reminder in reminders %}

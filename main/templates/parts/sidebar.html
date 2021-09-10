@@ -6,7 +6,12 @@
             <span style="font-size: 1rem" class="oi oi-plus"></span>
         </button>
     </form>
+
+
     <nav class="nav flex-column nav-pills my-3">
+    {% if categories.all|length == 0 %}
+        <div class="text-center h3">Добавьте категорию</div>
+    {% endif %}
         {% for cat in categories %}
             {% if cat_selected == cat.slug %}
                 <a class="nav-link active btn-secondary"
@@ -17,13 +22,17 @@
 
             {% else %}
                 {% if cat.total > 0 %}
-                <a class="nav-link text-secondary"
-                   href="{{ cat.get_absolute_url }}">{{ cat.name|truncatechars:25 }}:
-                    <span class="badge badge-pill badge-secondary">{{ cat.total }}</span>
-                </a>
+                    <a class="nav-link text-secondary"
+                       href="{{ cat.get_absolute_url }}">{{ cat.name|truncatechars:25 }}:
+                        <span class="badge badge-pill badge-secondary">{{ cat.total }}</span>
+                    </a>
                 {% else %}
                     <span class="nav-link text-secondary">{{ cat.name|truncatechars:25 }}:
                     <span class="badge badge-pill badge-secondary">{{ cat.total }}</span>
+                    <span class="ml-2">
+                        <a style="color:inherit" href="{% url 'main:deletenotecategory' cat.slug %}"><span
+                                class="oi oi-trash"></span></a>
+                    </span>
                 </span>
                 {% endif %}
             {% endif %}

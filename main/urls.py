@@ -18,6 +18,7 @@ urlpatterns =[
     path('test/', test, name='test'),
     path('deletenote/<slug:note_slug>/', DeleteNote.as_view(), name='deletenote'),
     path('deletereminder/<slug:reminder_slug>/', DeleteReminder.as_view(), name='deletereminder'),
+    path('deletenotecategory/<slug:cat_slug>/', DeleteCategory.as_view(), name='deletenotecategory'),
     path('note/<slug:note_slug>/', ShowNote.as_view(), name='show_note'),
     path('reminder/<slug:reminder_slug>/', ShowReminder.as_view(), name='show_reminder'),
     path('updatenote/<slug:note_slug>/', UpdateNote.as_view(), name='updatenote'),
