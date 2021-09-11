@@ -35,7 +35,7 @@ class AddReminderForm(forms.ModelForm):
     date = date_range()
     date_cron = forms.DateTimeField(required=False, label='Дата-время напоминания', widget=DateTimeInput(format='%Y-%m-%dT%H:%M', attrs={'min': date['start'], 'max': date['finish']}))
     # date_cron = forms.DateField(widget=DateInput(attrs={'min': '2021-01-01', 'max': '2030-01-01'}))
-    content = forms.CharField(required=False, widget=CKEditorWidget())
+    content = forms.CharField(label='Текст напоминания', required=False, widget=CKEditorWidget())
 
     def clean_raw_cron(self):
         if self.cleaned_data['raw_cron']:

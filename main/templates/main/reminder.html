@@ -35,8 +35,12 @@
                             {{ reminder.content }}
                         {% endautoescape %}
                         </p>
-                    <p class="mt-4">Cron-выражение: <i>{{ reminder.raw_cron }}</i></p>
+                {% if reminder.date_cron %}
                     <p>Дата-время напоминания: <i>{{ reminder.date_cron }}</i></p>
+                {% else %}
+                    <p class="mt-4">Cron-выражение: <i>{{ reminder.raw_cron }}</i></p>
+                {% endif %}
+
                 </div>
             </div>
         </div>
