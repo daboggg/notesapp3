@@ -9,6 +9,7 @@ django-js-asset==1.2.2
 django-tinymce==3.3.0
 easy-thumbnails==2.7.1
 gunicorn==20.1.0
+mysqlclient==2.1.1
 Pillow==8.3.1
 python-crontab==2.5.1
 python-dateutil==2.8.2
